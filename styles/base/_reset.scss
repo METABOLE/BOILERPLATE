@@ -1,0 +1,31 @@
+body {
+  min-height: 100vh;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  font-size: 16px;
+  font-family: var(--font-sample);
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  ::-moz-selection {
+    background: var(--color-black);
+    color: var(--color-white);
+  }
+  ::selection {
+    background: var(--color-black);
+    color: var(--color-white);
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

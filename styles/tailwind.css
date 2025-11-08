@@ -1,0 +1,111 @@
+@import 'tailwindcss';
+
+:root {
+  /* SPACINGS */
+  --x-double-default: calc(var(--x-default) * 2);
+  --y-double-default: calc(var(--y-default) * 2);
+  --x-default: clamp(20px, 7vw, 40px);
+  --y-default: clamp(20px, 8vh, 100px);
+  --x-half-default: calc(var(--x-default) / 2);
+  --y-half-default: calc(var(--y-default) / 2);
+
+  /* FONTS */
+  --font-sample: 'Sample', sans-serif;
+
+  /* COLORS */
+  --color-black: #000;
+  --color-white: #fff;
+}
+
+@theme {
+  /* COLORS */
+  /* Debug */
+  --color-red: #ff5142;
+  --color-blue: #001eff;
+
+  /* Primary */
+  --color-black: #000;
+  --color-white: #fff;
+
+  /* FONTS */
+  --font-sample: var(--font-sample);
+
+  /* PADDING */
+  --padding-x-half-default: var(--x-half-default);
+  --padding-y-half-default: var(--y-half-default);
+  --padding-x-default: var(--x-default);
+  --padding-y-default: var(--y-default);
+  --padding-x-double-default: var(--x-double-default);
+  --padding-y-double-default: var(--y-double-default);
+
+  /* MARGIN */
+  --margin-x-half-default: var(--x-half-default);
+  --margin-y-half-default: var(--y-half-default);
+  --margin-x-default: var(--x-default);
+  --margin-y-default: var(--y-default);
+  --margin-x-double-default: var(--x-double-default);
+  --margin-y-double-default: var(--y-double-default);
+
+  /* INSET */
+  --inset-x-half-default: var(--x-half-default);
+  --inset-y-half-default: var(--y-half-default);
+  --inset-x-default: var(--x-default);
+  --inset-y-default: var(--y-default);
+  --inset-x-double-default: var(--x-double-default);
+  --inset-y-double-default: var(--y-double-default);
+
+  /* GAP */
+  --gap-x-half-default: var(--x-half-default);
+  --gap-y-half-default: var(--y-half-default);
+  --gap-x-default: var(--x-default);
+  --gap-y-default: var(--y-default);
+  --gap-x-default-double: var(--x-double-default);
+  --gap-y-default-double: var(--y-double-default);
+
+  /* INSET */
+  --inset-x-half-default: var(--x-half-default);
+  --inset-y-half-default: var(--y-half-default);
+  --inset-x-default: var(--x-default);
+  --inset-y-default: var(--y-default);
+  --inset-x-double-default: var(--x-double-default);
+  --inset-y-double-default: var(--y-double-default);
+
+  /* WIDTH */
+  --width-x-double-default: var(--x-double-default);
+  --width-x-default: var(--x-default);
+  --width-x-half-default: var(--x-half-default);
+
+  /* HEIGHT */
+  --height-y-double-default: var(--y-double-default);
+  --height-y-default: var(--y-default);
+  --height-y-half-default: var(--y-half-default);
+
+  /* BREAKPOINTS */
+  --breakpoint-xs: 380px;
+
+  /* EASING */
+  /* Power1 */
+  --ease-power1-in: cubic-bezier(0.48, 0.04, 0.52, 0.99);
+  --ease-power1-out: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --ease-power1-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+
+  /* Power2 */
+  --ease-power2-in: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-power2-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-power2-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  /* Power3 */
+  --ease-power3-in: cubic-bezier(0.61, 0, 0.98, 0.57);
+  --ease-power3-out: cubic-bezier(0.06, 0.72, 0.23, 1);
+  --ease-power3-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* Power4 */
+  --ease-power4-in: cubic-bezier(0.7, 0, 0.3, 0);
+  --ease-power4-out: cubic-bezier(0.3, 1, 0.7, 1);
+  --ease-power4-in-out: cubic-bezier(0.83, 0, 0.17, 1);
+
+  /* Bounce (approximation) */
+  --ease-bounce-out: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce-in: cubic-bezier(0.76, 0, 0.24, -0.56);
+  --ease-bounce-in-out: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
