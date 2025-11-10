@@ -1,3 +1,4 @@
+import { IconSample } from '@/components/ui/icons';
 import { orderRankField, orderRankOrdering } from '@sanity/orderable-document-list';
 import { defineField, defineType } from 'sanity';
 
@@ -5,6 +6,7 @@ export default defineType({
   name: 'sample',
   title: 'SAMPLE',
   type: 'document',
+  icon: IconSample,
   orderings: [orderRankOrdering],
   fields: [
     orderRankField({ type: 'sample' }),
