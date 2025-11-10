@@ -20,7 +20,6 @@ const eslintConfig = [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
-    'plugin:react-you-might-not-need-an-effect/legacy-recommended',
     'prettier',
   ),
   {

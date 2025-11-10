@@ -28,7 +28,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <SEO />
 
       {isLoading ? (
-        <div className="bg-blue fixed z-[9999] h-screen w-screen" />
+        <div className="bg-blue fixed z-9999 h-screen w-screen" />
       ) : (
         <>
           <Header />

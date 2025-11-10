@@ -4,5 +4,5 @@ import { useMemo } from 'react';
 export const useIsScreenLoader = () => {
   const pathname = usePathname();
 
-  return useMemo(() => pathname === '/en' || pathname === '/fr' || pathname === '/', [pathname]);
+  return useMemo(() => pathname === '/', [pathname]);
 };
