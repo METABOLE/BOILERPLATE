@@ -137,7 +137,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
             }),
           ]);
         } catch (error) {
-          console.warn('Performance test timeout after 2s, forcing LOW performance level');
+          console.warn('Performance test timeout after 2s, forcing LOW performance level', error);
           executionTime = 2000;
         }
 

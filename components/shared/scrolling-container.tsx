@@ -75,8 +75,10 @@ const ScrollingContainer = forwardRef<
   useGSAP(() => {
     ScrollTrigger.refresh();
     animateInfinite(scrollContainer);
-    defaultState === 'pause' && controlScroll('pause', true);
-    if (defaultState === 'pause') return;
+    if (defaultState === 'pause') {
+      controlScroll('pause', true);
+      return;
+    }
     scrubAnimation();
   }, [scrollSpeed]);
 
