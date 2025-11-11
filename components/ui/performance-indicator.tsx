@@ -6,7 +6,7 @@ const PerformanceIndicator = () => {
   const { performanceLevel, executionTime } = usePerformance();
 
   return (
-    <div className="fixed right-4 bottom-4 z-[9999] flex items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl">
+    <div className="fixed right-4 bottom-4 z-9999 flex items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl">
       <div
         className={clsx(
           'flex h-2 w-2 items-center gap-2 rounded-full',
