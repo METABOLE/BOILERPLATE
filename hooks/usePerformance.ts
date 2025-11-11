@@ -152,7 +152,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
               border-radius: 50%;
               filter: blur(0px);
               transform: translate(0px, 0px) scale(1) rotate(0deg);
-              z-index: 999999;
+              z-index: -9999;
               pointer-events: none;
             `;
 
