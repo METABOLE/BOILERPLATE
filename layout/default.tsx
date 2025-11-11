@@ -32,7 +32,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       {isScreenLoader && <ScreenLoader />}
 
       {isLoading ? (
-        <div className="fixed inset-0 z-9998 bg-white" />
+        <div className="bg-blue fixed inset-0 z-9998" />
       ) : (
         <>
           <Header />

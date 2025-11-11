@@ -10,6 +10,7 @@ interface PerformanceMetrics {
   performanceLevel: PERFORMANCE_LEVEL;
   executionTime: number;
   isLoading: boolean;
+  score: number; // Score d'animation entre 0 et 100
 }
 
 const PERFORMANCE_LEVEL_VALUES = {
@@ -28,9 +29,15 @@ interface PerformanceUtils {
 const STORAGE_KEY = 'metabole_performance_metrics';
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 
+const THRESHOLDS = {
+  ANIMATION_HIGH: 500, // ms - Réduit pour le test 20 frames
+  ANIMATION_MEDIUM: 850, // ms - Réduit pour le test 20 frames
+} as const;
+
 interface CachedMetrics {
   performanceLevel: PERFORMANCE_LEVEL;
   executionTime: number;
+  score: number;
   timestamp: number;
 }
 
@@ -38,6 +45,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     performanceLevel: PERFORMANCE_LEVEL.HIGH,
     executionTime: 0,
+    score: 0,
     isLoading: true,
   });
 
@@ -66,7 +74,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
             if (cached) {
               const parsed: CachedMetrics = JSON.parse(cached);
               const age = Date.now() - parsed.timestamp;
-              if (age < CACHE_DURATION) {
+              if (age < CACHE_DURATION && parsed.score !== undefined) {
                 return parsed;
               }
             }
@@ -78,10 +86,11 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
 
         const cachedMetrics = getCachedMetrics();
         if (cachedMetrics) {
-          console.info('Using cached performance metrics:', cachedMetrics);
+          console.info('✅ Using cached performance metrics:', cachedMetrics);
           setMetrics({
             performanceLevel: cachedMetrics.performanceLevel,
             executionTime: cachedMetrics.executionTime,
+            score: cachedMetrics.score,
             isLoading: false,
           });
           return;
@@ -92,7 +101,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
             if (document.readyState !== 'complete') {
               window.addEventListener('load', () => resolve(), { once: true });
             } else {
-              setTimeout(resolve, 500);
+              setTimeout(resolve, 50);
             }
           });
         };
@@ -117,7 +126,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
             ) as PerformanceNavigationTiming[];
             if (navigationEntries.length > 0) {
               const [nav] = navigationEntries;
-              return Date.now() - nav.loadEventEnd < 2000;
+              return Date.now() - nav.loadEventEnd < 500;
             }
           }
           return false;
@@ -130,26 +139,39 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
             const testElement = document.createElement('div');
             testElement.style.cssText = `
               position: fixed;
-              top: -100px;
-              left: -100px;
+              top: -200px;
+              left: -200px;
               width: 100px;
               height: 100px;
-              background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+              background: linear-gradient(45deg, #ff0000, #0000ff);
+              border-radius: 50%;
               filter: blur(0px);
-              z-index: -9999;
+              transform: translate(0px, 0px) scale(1) rotate(0deg);
+              z-index: 999999;
               pointer-events: none;
             `;
 
             document.body.appendChild(testElement);
 
             let frameCount = 0;
-            const totalFrames = 30;
-            let blurValue = 0;
+            const totalFrames = 20;
+            const frameTimes: number[] = [];
+            let lastFrameTime = start;
 
             const animate = () => {
-              frameCount++;
-              blurValue = (frameCount / totalFrames) * 10;
+              const currentTime = performance.now();
+              frameTimes.push(currentTime - lastFrameTime);
+              lastFrameTime = currentTime;
 
+              frameCount++;
+              const progress = frameCount / totalFrames;
+
+              const blurValue = progress * 4; // 0 à 4px
+              const translate = progress * 40 - 20; // -20px à +20px
+              const rotation = progress * 360; // 0 à 360deg
+              const scale = 1 + progress * 0.25; // 1 à 1.25
+
+              testElement.style.transform = `translate(${translate}px, ${translate}px) scale(${scale}) rotate(${rotation}deg)`;
               testElement.style.filter = `blur(${blurValue}px)`;
 
               if (frameCount < totalFrames) {
@@ -157,7 +179,21 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
               } else {
                 const end = performance.now();
                 document.body.removeChild(testElement);
-                resolve(end - start);
+
+                // Calcule la moyenne des temps de frame (ignore les 3 premières pour 20 frames)
+                const relevantFrames = frameTimes.slice(3);
+                const sumFrameTimes = relevantFrames.reduce((a, b) => a + b, 0);
+                const avgFrameTime = sumFrameTimes / relevantFrames.length;
+                const totalTime = end - start;
+
+                // Log des détails du test
+                console.info('🎯 Animation test details:', {
+                  totalTime: Math.round(totalTime),
+                  avgFrameTime: avgFrameTime.toFixed(2),
+                  expectedFPS: (1000 / avgFrameTime).toFixed(1),
+                });
+
+                resolve(totalTime);
               }
             };
 
@@ -169,19 +205,26 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
 
         const firstLoad = isFirstLoad();
 
+        // Délais ultra-minimaux pour le test le plus rapide possible
         if (firstLoad) {
-          console.info('First load detected, waiting for resources to fully load...');
-          await new Promise((resolve) => setTimeout(resolve, 3000));
+          // Premier chargement : attente minimale
+          console.info('🔄 First load - waiting 200ms for critical resources...');
+          await new Promise((resolve) => setTimeout(resolve, 200));
         } else if (isBrowserBusy()) {
-          console.info('Browser still busy, waiting additional 2s...');
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+          // Navigation suivante mais navigateur occupé : attente très courte
+          console.info('⏳ Browser busy - waiting 100ms...');
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        } else {
+          // Navigation rapide : pas d'attente supplémentaire
+          console.info('⚡ Ready to test immediately');
         }
 
+        // Attend un moment idle du navigateur (ultra-court)
         await new Promise((resolve) => {
           if (typeof requestIdleCallback !== 'undefined') {
-            requestIdleCallback(() => resolve(null), { timeout: 1000 });
+            requestIdleCallback(() => resolve(null), { timeout: 100 });
           } else {
-            setTimeout(() => resolve(null), 100);
+            setTimeout(() => resolve(null), 16);
           }
         });
 
@@ -195,44 +238,76 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
               setTimeout(() => {
                 isTimeout = true;
                 reject(new Error('Performance test timeout'));
-              }, 3000);
+              }, 1500); // Si ça timeout après 1.5s, c'est définitivement LOW
             }),
           ]);
         } catch (error) {
-          console.warn('Performance test timeout after 3s, forcing LOW performance level', error);
-          executionTime = 3000;
+          console.warn(
+            '⚠️ Performance test timeout after 1.5s, forcing LOW performance level',
+            error,
+          );
+          executionTime = 1500;
         }
 
-        let performanceLevel: PERFORMANCE_LEVEL;
-
-        if (isTimeout || executionTime > 800) {
-          performanceLevel = PERFORMANCE_LEVEL.LOW;
-        } else if (executionTime <= 600) {
-          performanceLevel = PERFORMANCE_LEVEL.HIGH;
+        // Calcul du score d'animation (0-100) - basé UNIQUEMENT sur le temps d'exécution
+        // Calibré pour le test ultra-rapide (1 élément, 20 frames)
+        // Aucune dépendance au hardware - fonctionne sur tous les devices
+        let animationScore = 100;
+        if (isTimeout || executionTime > 1200) {
+          // Timeout ou > 1200ms = très faible
+          animationScore = 10;
+        } else if (executionTime > THRESHOLDS.ANIMATION_MEDIUM) {
+          // Au-dessus de 850ms = machines anciennes/faibles
+          animationScore = 30;
+        } else if (executionTime > THRESHOLDS.ANIMATION_HIGH) {
+          // Entre 500ms et 850ms = machines moyennes
+          animationScore = 60;
+        } else if (executionTime > 350) {
+          // Entre 350ms et 500ms = machines performantes
+          animationScore = 85;
         } else {
-          performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
+          // Moins de 350ms = machines ultra-performantes
+          animationScore = 100;
         }
 
-        console.table({ executionTime, performanceLevel, firstLoad });
+        // Détermine le niveau de performance basé UNIQUEMENT sur le temps d'animation
+        let performanceLevel: PERFORMANCE_LEVEL;
+        if (executionTime <= THRESHOLDS.ANIMATION_HIGH) {
+          performanceLevel = PERFORMANCE_LEVEL.HIGH;
+        } else if (executionTime <= THRESHOLDS.ANIMATION_MEDIUM) {
+          performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
+        } else {
+          performanceLevel = PERFORMANCE_LEVEL.LOW;
+        }
+
+        // Log détaillé des métriques - basé uniquement sur l'animation
+        console.info('🎯 Performance Detection Complete');
+        console.table({
+          '⏱️ Animation Time': `${Math.round(executionTime)}ms`,
+          '🎨 Score': `${animationScore}/100`,
+          '⚡ Performance Level': performanceLevel.toUpperCase(),
+          '🔄 First Load': firstLoad ? 'Yes' : 'No',
+        });
+        console.info('ℹ️ Detection based purely on animation performance (universal & durable)');
 
         try {
           const cacheData: CachedMetrics = {
             performanceLevel,
             executionTime,
+            score: animationScore,
             timestamp: Date.now(),
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheData));
-          console.info('Performance metrics cached for future visits');
+          console.info('💾 Performance metrics cached for 24h');
         } catch (error) {
-          console.warn('Error caching performance metrics:', error);
+          console.warn('⚠️ Error caching performance metrics:', error);
         }
 
-        const delay = isTimeout ? 3000 : executionTime;
-        await new Promise((resolve) => setTimeout(resolve, delay));
-
+        // Mise à jour immédiate de l'état (pas de délai inutile)
         setMetrics({
           performanceLevel,
           executionTime,
+          score: animationScore,
           isLoading: false,
         });
       };
