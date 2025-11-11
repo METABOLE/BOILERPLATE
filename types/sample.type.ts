@@ -1,4 +1,4 @@
-import { Image, Slug } from "sanity";
+import { Image, Slug } from 'sanity';
 
 export interface Sample {
   _id: string;

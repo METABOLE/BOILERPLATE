@@ -1,24 +1,21 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { validatePreviewUrl } from "@sanity/preview-url-secret";
-import { client } from "@/sanity/lib/client";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { validatePreviewUrl } from '@sanity/preview-url-secret';
+import { client } from '@/sanity/lib/client';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!req.url) {
-    return res.status(500).json({ message: "Missing request URL" });
+    return res.status(500).json({ message: 'Missing request URL' });
   }
 
-  const { isValid, redirectTo = "/" } = await validatePreviewUrl(
+  const { isValid, redirectTo = '/' } = await validatePreviewUrl(
     client.withConfig({
       token: process.env.SANITY_VIEWER_TOKEN,
     }),
-    req.url
+    req.url,
   );
 
   if (!isValid) {
-    return res.status(401).json({ message: "Invalid secret" });
+    return res.status(401).json({ message: 'Invalid secret' });
   }
 
   // Enable Draft Mode

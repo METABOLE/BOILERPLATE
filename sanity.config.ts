@@ -5,7 +5,7 @@
  */
 
 import { defineConfig } from 'sanity';
-import { presentationTool } from "sanity/presentation";
+import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
@@ -28,10 +28,10 @@ export default defineConfig({
       previewUrl: {
         // Add a new ENV var to your Studio codebase if needed to accomodate live vs local preview.
         origin: process.env.NEXT_PUBLIC_SANITY_STUDIO_URL || 'http://localhost:3000',
-        preview: "/",
+        preview: '/',
         previewMode: {
-          enable: "/api/enable-draft",
-          disable: "/api/disable-draft",
+          enable: '/api/enable-draft',
+          disable: '/api/disable-draft',
         },
       },
     }),

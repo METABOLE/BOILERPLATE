@@ -42,9 +42,8 @@ const ScreenLoader = () => {
   });
 
   useGSAP(() => {
-    revealAnimation()
+    revealAnimation();
   }, []);
-
 
   useEffect(() => {
     if (counterComplete && !isLoading) {

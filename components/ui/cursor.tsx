@@ -13,8 +13,6 @@ enum CURSOR_STATE {
 const Cursor = () => {
   const isTouchDevice = useTouchDevice();
 
-  
-
   const { contextSafe } = useGSAP();
   const pathname = usePathname();
   const pointerRefs = {
@@ -101,7 +99,7 @@ const Cursor = () => {
     }, 500);
   }, [pathname]);
 
-  if (isTouchDevice) return null
+  if (isTouchDevice) return null;
 
   return (
     <>

@@ -1,9 +1,5 @@
-/**
- * Hook to completely clear all website data
- * Similar to "Clear site data" in browser DevTools
- */
 const useClearSiteData = () => {
-  const clearSiteData = async (): Promise<void> => {
+  const clearSiteData = async () => {
     try {
       console.info('🧹 Starting complete cache and storage cleanup...');
 
@@ -29,7 +25,6 @@ const useClearSiteData = () => {
         for (const cookie of cookies) {
           const eqPos = cookie.indexOf('=');
           const name = eqPos > -1 ? cookie.substring(0, eqPos).trim() : cookie.trim();
-          // Delete cookie for all possible paths and domains
           document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
           document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
           document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.${window.location.hostname}`;
@@ -84,13 +79,11 @@ const useClearSiteData = () => {
 
       console.info('🎉 Complete cleanup finished! Reloading page...');
 
-      // Force hard reload (bypass cache)
       setTimeout(() => {
         window.location.replace(window.location.href);
       }, 500);
     } catch (error) {
       console.error('❌ Error during cleanup:', error);
-      // Reload anyway
       window.location.reload();
     }
   };
@@ -99,4 +92,3 @@ const useClearSiteData = () => {
 };
 
 export default useClearSiteData;
-

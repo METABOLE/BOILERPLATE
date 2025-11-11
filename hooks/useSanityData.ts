@@ -5,7 +5,7 @@ import type { SanityPageProps } from '@/types';
 export function useSanityData<T>(props: SanityPageProps<T>) {
   const encodeDataAttribute = useMemo(
     () => createDataAttribute(props.initial.data, props.initial.sourceMap, props.draftMode),
-    [props.initial.data, props.initial.sourceMap, props.draftMode]
+    [props.initial.data, props.initial.sourceMap, props.draftMode],
   );
 
   return {

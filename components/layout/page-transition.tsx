@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 export default function PageTransition({ children }: { children: ReactNode }) {
   const { isLoading } = usePerformance();
   const isScreenLoader = useIsScreenLoader();
-  
+
   const firstBlockVariants: Variants = {
     initial: {
       y: 0,

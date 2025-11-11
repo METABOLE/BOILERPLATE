@@ -1,7 +1,7 @@
-import { loadQuery, loadQueryOptions } from "@/sanity/ssr";
-import { defineEncodeDataAttribute } from "@sanity/core-loader/encode-data-attribute";
-import { studioUrl } from "@/sanity/env";
-import type { QueryParams, ContentSourceMap } from "@sanity/client";
+import { loadQuery, loadQueryOptions } from '@/sanity/ssr';
+import { defineEncodeDataAttribute } from '@sanity/core-loader/encode-data-attribute';
+import { studioUrl } from '@/sanity/env';
+import type { QueryParams, ContentSourceMap } from '@sanity/client';
 
 /**
  * Fetches data from Sanity with draft mode support
@@ -10,12 +10,12 @@ import type { QueryParams, ContentSourceMap } from "@sanity/client";
 export async function fetchSanityData<T = unknown>(
   query: string,
   params: QueryParams = {},
-  context: { draftMode?: boolean } = {}
+  context: { draftMode?: boolean } = {},
 ) {
   const { draftMode = false } = context;
   const options = loadQueryOptions({ draftMode });
   const initial = await loadQuery<T>(query, params, options);
-  
+
   return {
     initial,
     draftMode,
@@ -29,12 +29,11 @@ export async function fetchSanityData<T = unknown>(
 export function createDataAttribute(
   data: unknown,
   sourceMap: ContentSourceMap | undefined,
-  isDraftMode = false
+  isDraftMode = false,
 ) {
   if (!isDraftMode) {
     return () => undefined;
   }
-  
+
   return defineEncodeDataAttribute(data, sourceMap, studioUrl);
 }
-

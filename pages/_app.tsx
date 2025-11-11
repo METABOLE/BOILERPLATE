@@ -6,10 +6,9 @@ import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-const SanityVisualEditing = dynamic(
-  () => import('@/components/sanity/sanity-visual-editing'),
-  { ssr: false }
-);
+const SanityVisualEditing = dynamic(() => import('@/components/sanity/sanity-visual-editing'), {
+  ssr: false,
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
@@ -23,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
     '%c https://metabole.studio/ ',
     'background: #f1f2ff; color: white !important; padding: 8px 12px; border-radius: 4px; font-weight: bold;',
   );
-  
+
   return (
     <>
       {pathname.includes('studio') ? (

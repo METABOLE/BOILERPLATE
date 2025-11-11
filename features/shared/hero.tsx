@@ -1,6 +1,6 @@
-import { urlFor } from "@/sanity/lib/image";
-import { EncodeDataAttribute, Sample } from "@/types";
-import Image from "next/image";
+import { urlFor } from '@/sanity/lib/image';
+import { EncodeDataAttribute, Sample } from '@/types';
+import Image from 'next/image';
 
 interface HeroProps {
   data: Sample[];
@@ -12,15 +12,15 @@ const Hero = ({ data, encodeDataAttribute }: HeroProps) => {
     <div>
       {data.map((sample, index) => (
         <div key={sample._id}>
-          <h1 data-sanity={encodeDataAttribute([index, 'name'])}>
-            {sample.name}
-          </h1>
+          <h1 data-sanity={encodeDataAttribute([index, 'name'])}>{sample.name}</h1>
           <Image
-            alt={sample.name} 
-            data-sanity={encodeDataAttribute([index, 'image'])} 
-            height={100} 
+            alt={sample.name}
+            className="h-52 w-52 object-cover"
+            data-sanity={encodeDataAttribute([index, 'image'])}
+            height={100}
             src={urlFor(sample.image).url()}
             width={100}
+            priority
           />
         </div>
       ))}

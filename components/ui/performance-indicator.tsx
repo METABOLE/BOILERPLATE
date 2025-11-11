@@ -8,14 +8,18 @@ const PerformanceIndicator = () => {
   const { clearSiteData } = useClearSiteData();
 
   const handleClick = async () => {
-    if (window.confirm('⚠️ Clear all site data and reload?\n\nThis will delete:\n• localStorage\n• sessionStorage\n• Cookies\n• IndexedDB\n• Cache Storage\n• Service Workers\n\nThe page will reload automatically.')) {
+    if (
+      window.confirm(
+        '⚠️ Clear all site data and reload?\n\nThis will delete:\n• localStorage\n• sessionStorage\n• Cookies\n• IndexedDB\n• Cache Storage\n• Service Workers\n\nThe page will reload automatically.',
+      )
+    ) {
       await clearSiteData();
     }
   };
 
   return (
     <button
-      className="fixed right-4 bottom-4 cursor-pointer z-999 flex items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all "
+      className="fixed right-4 bottom-4 z-999 flex cursor-pointer items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all"
       title="Click to clear all site data and reload"
       onClick={handleClick}
     >
