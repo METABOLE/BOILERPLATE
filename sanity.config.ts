@@ -27,7 +27,7 @@ export default defineConfig({
     presentationTool({
       previewUrl: {
         // Add a new ENV var to your Studio codebase if needed to accomodate live vs local preview.
-        origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN || 'http://localhost:3000',
+        origin: process.env.NEXT_PUBLIC_SANITY_STUDIO_URL || 'http://localhost:3000',
         preview: "/",
         previewMode: {
           enable: "/api/enable-draft",
