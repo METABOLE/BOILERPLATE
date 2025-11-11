@@ -10,7 +10,7 @@ interface PerformanceMetrics {
   performanceLevel: PERFORMANCE_LEVEL;
   executionTime: number;
   isLoading: boolean;
-  score: number; // Score d'animation entre 0 et 100
+  score: number;
 }
 
 const PERFORMANCE_LEVEL_VALUES = {
@@ -27,11 +27,11 @@ interface PerformanceUtils {
 }
 
 const STORAGE_KEY = 'metabole_performance_metrics';
-const CACHE_DURATION = 24 * 60 * 60 * 1000;
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
 const THRESHOLDS = {
-  ANIMATION_HIGH: 500, // ms - Réduit pour le test 20 frames
-  ANIMATION_MEDIUM: 850, // ms - Réduit pour le test 20 frames
+  ANIMATION_HIGH: 500, // ms
+  ANIMATION_MEDIUM: 850, // ms
 } as const;
 
 interface CachedMetrics {
@@ -68,6 +68,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const detectPerformance = async () => {
+        // Vérification du cache (30 minutes)
         const getCachedMetrics = (): CachedMetrics | null => {
           try {
             const cached = localStorage.getItem(STORAGE_KEY);
@@ -79,14 +80,15 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
               }
             }
           } catch (error) {
-            console.warn('Error reading cached performance metrics:', error);
+            console.warn('⚠️ Error reading cached performance metrics:', error);
           }
           return null;
         };
 
         const cachedMetrics = getCachedMetrics();
         if (cachedMetrics) {
-          console.info('✅ Using cached performance metrics:', cachedMetrics);
+          const cacheAge = Math.round((Date.now() - cachedMetrics.timestamp) / 60000);
+          console.info(`✅ Using cached performance metrics (${cacheAge}min old, valid for 30min)`);
           setMetrics({
             performanceLevel: cachedMetrics.performanceLevel,
             executionTime: cachedMetrics.executionTime,
@@ -95,6 +97,9 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           });
           return;
         }
+
+        // Pas de cache valide, on lance le test
+        console.info('🎯 Running performance test (no valid cache)...');
 
         const waitForStableState = async (): Promise<void> => {
           return new Promise((resolve) => {
@@ -205,24 +210,19 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
 
         const firstLoad = isFirstLoad();
 
-        // Délais ultra-minimaux pour le test le plus rapide possible
+        // Délais minimaux - optimisé pour test à chaque chargement
         if (firstLoad) {
-          // Premier chargement : attente minimale
-          console.info('🔄 First load - waiting 200ms for critical resources...');
-          await new Promise((resolve) => setTimeout(resolve, 200));
+          // Premier chargement : attente courte pour stabilisation
+          await new Promise((resolve) => setTimeout(resolve, 150));
         } else if (isBrowserBusy()) {
-          // Navigation suivante mais navigateur occupé : attente très courte
-          console.info('⏳ Browser busy - waiting 100ms...');
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        } else {
-          // Navigation rapide : pas d'attente supplémentaire
-          console.info('⚡ Ready to test immediately');
+          // Navigation : attente minimale si navigateur occupé
+          await new Promise((resolve) => setTimeout(resolve, 50));
         }
 
-        // Attend un moment idle du navigateur (ultra-court)
+        // Attend un moment idle du navigateur (très court)
         await new Promise((resolve) => {
           if (typeof requestIdleCallback !== 'undefined') {
-            requestIdleCallback(() => resolve(null), { timeout: 100 });
+            requestIdleCallback(() => resolve(null), { timeout: 80 });
           } else {
             setTimeout(() => resolve(null), 16);
           }
@@ -288,8 +288,8 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           '⚡ Performance Level': performanceLevel.toUpperCase(),
           '🔄 First Load': firstLoad ? 'Yes' : 'No',
         });
-        console.info('ℹ️ Detection based purely on animation performance (universal & durable)');
 
+        // Mise en cache pour 30 minutes
         try {
           const cacheData: CachedMetrics = {
             performanceLevel,
@@ -298,12 +298,12 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
             timestamp: Date.now(),
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheData));
-          console.info('💾 Performance metrics cached for 24h');
+          console.info('💾 Performance metrics cached for 30 minutes');
         } catch (error) {
           console.warn('⚠️ Error caching performance metrics:', error);
         }
 
-        // Mise à jour immédiate de l'état (pas de délai inutile)
+        // Mise à jour immédiate de l'état
         setMetrics({
           performanceLevel,
           executionTime,
