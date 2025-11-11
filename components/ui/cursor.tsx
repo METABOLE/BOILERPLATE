@@ -13,7 +13,7 @@ enum CURSOR_STATE {
 const Cursor = () => {
   const isTouchDevice = useTouchDevice();
 
-  if (isTouchDevice) return null;
+  
 
   const { contextSafe } = useGSAP();
   const pathname = usePathname();
@@ -70,6 +70,9 @@ const Cursor = () => {
   );
 
   useEffect(() => {
+    // Ne pas ajouter les event listeners sur les appareils tactiles
+    if (isTouchDevice) return;
+
     observerRef.current = new MutationObserver(() => {
       manageCursorEvents('removeEventListener');
       manageCursorEvents('addEventListener');
@@ -90,13 +93,15 @@ const Cursor = () => {
       manageCursorEvents('removeEventListener');
       observerRef.current?.disconnect();
     };
-  }, [cursorHandlers, manageCursorEvents]);
+  }, [cursorHandlers, manageCursorEvents, isTouchDevice]);
 
   useEffect(() => {
     setTimeout(() => {
       setCursorState(CURSOR_STATE.DEFAULT);
     }, 500);
   }, [pathname]);
+
+  if (isTouchDevice) return null
 
   return (
     <>

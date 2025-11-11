@@ -14,6 +14,15 @@ const SanityVisualEditing = dynamic(
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
   const { draftMode } = pageProps;
+
+  console.info(
+    '%c Designed & Coded by METABOLE:',
+    'background: #1b17ee; color: white !important; padding: 8px 12px; border-radius: 4px; font-weight: bold;',
+  );
+  console.info(
+    '%c https://metabole.studio/ ',
+    'background: #f1f2ff; color: white !important; padding: 8px 12px; border-radius: 4px; font-weight: bold;',
+  );
   
   return (
     <>

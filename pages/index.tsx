@@ -4,11 +4,6 @@ import { fetchSamples } from "@/services/sample.service";
 import type { InferGetStaticPropsType } from "next";
 
 export const getStaticProps = async (context: { draftMode?: boolean }) => {
-  // const [samples, otherSamples] = await Promise.all([
-  //   fetchSamples(context),
-  //   fetchOtherSamples(context),
-  // ]);
-
   const samples = await fetchSamples(context);
   
   return { 

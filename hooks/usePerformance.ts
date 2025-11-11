@@ -177,7 +177,13 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           await new Promise((resolve) => setTimeout(resolve, 2000));
         }
 
-        await new Promise((resolve) => requestIdleCallback(() => resolve(null), { timeout: 1000 }));
+        await new Promise((resolve) => {
+          if (typeof requestIdleCallback !== 'undefined') {
+            requestIdleCallback(() => resolve(null), { timeout: 1000 });
+          } else {
+            setTimeout(() => resolve(null), 100);
+          }
+        });
 
         let executionTime: number;
         let isTimeout = false;
