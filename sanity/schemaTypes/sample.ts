@@ -14,7 +14,7 @@ export default defineType({
       name: 'name',
       title: 'Name',
       type: 'string',
-      description: "Device's name.",
+      description: "Sample's name.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -23,12 +23,21 @@ export default defineType({
       options: {
         source: 'name',
       },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      description: "Sample's image.",
+      validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
     select: {
       title: 'name',
       subtitle: 'slug.current',
+      image: 'image',
     },
   },
 });

@@ -1,5 +1,8 @@
+import { Image, Slug } from "sanity";
+
 export interface Sample {
   _id: string;
-  title: string;
-  slug: string;
+  name: string;
+  slug: Slug;
+  image: Image;
 }

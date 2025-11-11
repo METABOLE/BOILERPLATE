@@ -1,15 +1,17 @@
-import { client } from '@/sanity/lib/client';
+import { Sample } from '@/types';
+import { groq } from 'next-sanity';
+import { fetchSanityData } from './sanity.service';
 
-export const fetchSample = async () => {
-  const query = `
+
+export const fetchSamples = async (context: { draftMode?: boolean } = {}) => {
+  const query = groq`
     *[_type == "sample"] {
       _id,
-      title,
+      name,
       slug,
+      image
     }
   `;
 
-  const models = await client.fetch(query);
-
-  return models;
+  return await fetchSanityData<Sample[]>(query, {}, context);
 };
