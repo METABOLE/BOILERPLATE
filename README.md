@@ -1,95 +1,95 @@
-# Altitude 101
+# BOILERPLATE
 
-Projet Next.js avec architecture modulaire et conventions strictes.
+A Next.js boilerplate with modular architecture and strict conventions.
 
-## 🚀 Démarrage
+## 🚀 Getting Started
 
 ```bash
 yarn dev
 ```
 
-Ouvrez [http://localhost:3000](http://localhost:3000) pour voir le résultat.
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
 ## 📁 Architecture
 
-### Composants
-- **`features/`** : Composants spécifiques à chaque page
-- **`components/ui/`** : Composants réutilisables (Button, Icons, etc.)
-- **`components/layout/`** : Composants de mise en page (Header, Footer)
-- **`components/shared/`** : Composants partagés entre features
+### Components
+- **`features/`**: Page-specific components
+- **`components/ui/`**: Reusable components (Button, Icons, etc.)
+- **`components/layout/`**: Layout components (Header, Footer)
+- **`components/shared/`**: Components shared between features
 
 ### Hooks
-- **`hooks/`** : Logique métier réutilisable (performance, scroll, animations, etc.)
+- **`hooks/`**: Reusable business logic (performance, scroll, animations, etc.)
 
 ### Layout
-- **`layout/`** : Layouts spécifiques (default.tsx)
+- **`layout/`**: Specific layouts (default.tsx)
 
 ### Providers
-- **`providers/`** : Contextes globaux
-  - `performance.provider.tsx` : Gestion des performances
-  - `smooth-scroll.provider.tsx` : Scroll fluide
-  - `root.tsx` : Provider racine
+- **`providers/`**: Global contexts
+  - `performance.provider.tsx`: Performance management
+  - `smooth-scroll.provider.tsx`: Smooth scroll
+  - `root.tsx`: Root provider
 
 ## 🎨 Styles
 
 ### Tailwind CSS
-- **Variables CSS** : `styles/tailwind.css`
-- **Spacing global** : Variables `--x-default`, `--y-default` avec variantes (half, double)
-- **Padding/Margin** : `padding-x-default`, `margin-y-double-default`, etc.
-- **Couleurs et fonts** : Déclarées dans `:root` et `@theme`
+- **CSS Variables**: `styles/tailwind.css`
+- **Global Spacing**: Variables `--x-default`, `--y-default` with variants (half, double)
+- **Padding/Margin**: `padding-x-default`, `margin-y-double-default`, etc.
+- **Colors and fonts**: Declared in `:root` and `@theme`
 
 ### SCSS
-- **`styles/abstracts/`** : Mixins et keyframes
-- **`styles/base/`** : Reset, fonts, Lenis
-- **`styles/components/`** : Typographie et composants
-- **`styles/main.scss`** : Point d'entrée principal
+- **`styles/abstracts/`**: Mixins and keyframes
+- **`styles/base/`**: Reset, fonts, Lenis
+- **`styles/components/`**: Typography and components
+- **`styles/main.scss`**: Main entry point
 
 ### Conventions
-- **Typographie** : Classes `.h1`, `.h2`, `.h3`, `.p1`, `.p2`, `.p3` dans `_typography.scss`
-- **Fonts** : Déclaration des polices dans `_fonts.scss`
-- **Variables globales** : SCSS pour la typographie, Tailwind pour le spacing
-- **Mixins** : `_mixins.scss`
-- **Animations** : `_keyframes.scss`
+- **Typography**: Classes `.h1`, `.h2`, `.h3`, `.p1`, `.p2`, `.p3` in `_typography.scss`
+- **Fonts**: Font declarations in `_fonts.scss`
+- **Global Variables**: SCSS for typography, Tailwind for spacing
+- **Mixins**: `_mixins.scss`
+- **Animations**: `_keyframes.scss`
 
 ## ⚙️ Configuration
 
 ### ESLint + Prettier
 ```bash
-yarn format    # Formater le code
-yarn check     # Vérifier sans corriger
+yarn format    # Format code
+yarn check     # Check without fixing
 yarn lint      # Linter
 ```
 
 ### VS Code
-- Formatage automatique avec ESLint
-- Prettier pour l'ordre des propriétés CSS
-- Husky pour les hooks Git
+- Automatic formatting with ESLint
+- Prettier for CSS property ordering
+- Husky for Git hooks
 
 ## 🛠️ Scripts
 
 ```bash
-yarn dev       # Développement avec Turbopack
-yarn build     # Build de production
-yarn start     # Serveur de production
-yarn format    # Formater avec ESLint
-yarn check     # Vérifier le code
+yarn dev       # Development with Turbopack
+yarn build     # Production build
+yarn start     # Production server
+yarn format    # Format with ESLint
+yarn check     # Check code
 ```
 
-## 📦 Dépendances
+## 📦 Dependencies
 
-- **Next.js 15** avec Pages Router
+- **Next.js 15** with Pages Router
 - **React 19** + TypeScript
-- **Sanity v4** pour le CMS + Visual Editing
-- **GSAP** pour les animations
-- **Lenis** pour le scroll fluide
+- **Sanity v4** for CMS + Visual Editing
+- **GSAP** for animations
+- **Lenis** for smooth scroll
 - **Tailwind CSS 4** + SCSS
-- **ESLint** + Prettier pour le code quality
+- **ESLint** + Prettier for code quality
 
 ## 🎯 Sanity CMS
 
 ### Configuration
 
-Les variables d'environnement nécessaires :
+Required environment variables:
 
 ```env
 NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
@@ -98,34 +98,34 @@ NEXT_PUBLIC_SANITY_STUDIO_URL=http://localhost:3000/studio
 SANITY_VIEWER_TOKEN=your-token
 ```
 
-### Studio Sanity
+### Sanity Studio
 
-Accédez au studio à [http://localhost:3000/studio](http://localhost:3000/studio)
+Access the studio at [http://localhost:3000/studio](http://localhost:3000/studio)
 
-### Architecture de données
+### Data Architecture
 
 #### Services
-- **`services/sanity.service.ts`** : Logique centralisée pour fetch et Visual Editing
-  - `fetchSanityData()` : Récupère les données avec support du draft mode
-  - `createDataAttribute()` : Génère les attributs click-to-edit
+- **`services/sanity.service.ts`**: Centralized logic for fetching and Visual Editing
+  - `fetchSanityData()`: Fetches data with draft mode support
+  - `createDataAttribute()`: Generates click-to-edit attributes
 
-- **`services/[content].service.ts`** : Services par type de contenu (ex: `sample.service.ts`)
-  - Contient les requêtes GROQ spécifiques
-  - Utilise `fetchSanityData()` sous le capot
+- **`services/[content].service.ts`**: Services per content type (e.g., `sample.service.ts`)
+  - Contains specific GROQ queries
+  - Uses `fetchSanityData()` under the hood
 
 #### Hooks
-- **`hooks/useSanityData.ts`** : Hook pour simplifier l'usage des données Sanity
-  - Extrait `data` et `encodeDataAttribute` automatiquement
-  - À utiliser dans vos composants
+- **`hooks/useSanityData.ts`**: Hook to simplify Sanity data usage
+  - Automatically extracts `data` and `encodeDataAttribute`
+  - To be used in your components
 
 ### Visual Editing
 
-Le Visual Editing permet de modifier le contenu directement depuis l'aperçu.
+Visual Editing allows you to modify content directly from the preview.
 
-#### Utilisation dans une page
+#### Usage in a page
 
 ```typescript
-// pages/exemple.tsx
+// pages/example.tsx
 import { useSanityData } from "@/hooks/useSanityData";
 import { fetchSamples } from "@/services/sample.service";
 import type { InferGetStaticPropsType } from "next";
@@ -136,7 +136,7 @@ export const getStaticProps = async (context: { draftMode?: boolean }) => {
   return { 
     props: { 
       samples,
-      draftMode: samples.draftMode // ✅ Important pour activer Visual Editing
+      draftMode: samples.draftMode // ✅ Important to enable Visual Editing
     } 
   };
 }
@@ -159,30 +159,30 @@ export default function Page({ samples }: InferGetStaticPropsType<typeof getStat
 }
 ```
 
-#### Click-to-edit sur les champs
+#### Click-to-edit on fields
 
-Pour un champ simple :
+For a simple field:
 ```typescript
 data-sanity={encodeDataAttribute('title')}
 ```
 
-Pour un champ dans un tableau :
+For a field in an array:
 ```typescript
 data-sanity={encodeDataAttribute([index, 'title'])}
 ```
 
-Pour un champ imbriqué :
+For a nested field:
 ```typescript
 data-sanity={encodeDataAttribute(['author', 'name'])}
 ```
 
-#### Activation du Draft Mode
+#### Activating Draft Mode
 
-1. Allez dans le Studio : [http://localhost:3000/studio](http://localhost:3000/studio)
-2. Ouvrez le **Presentation Tool**
-3. Cliquez sur un élément avec `data-sanity` pour l'éditer
-4. Les modifications sont visibles en temps réel
+1. Go to the Studio: [http://localhost:3000/studio](http://localhost:3000/studio)
+2. Open the **Presentation Tool**
+3. Click on an element with `data-sanity` to edit it
+4. Changes are visible in real-time
 
-#### Désactivation
+#### Deactivation
 
-Cliquez sur "Disable Draft Mode" dans l'aperçu, ou allez sur `/api/disable-draft`
+Click "Disable Draft Mode" in the preview, or go to `/api/disable-draft`
