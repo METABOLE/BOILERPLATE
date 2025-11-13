@@ -47,8 +47,12 @@ const eslintConfig = [
         // DOM types
         HTMLElement: 'readonly',
         HTMLDivElement: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLSpanElement: 'readonly',
+        HTMLUListElement: 'readonly',
         SVGSVGElement: 'readonly',
         Node: 'readonly',
+        NodeListOf: 'readonly',
         Element: 'readonly',
 
         // Browser APIs
