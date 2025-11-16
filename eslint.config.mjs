@@ -50,6 +50,7 @@ const eslintConfig = [
         HTMLButtonElement: 'readonly',
         HTMLSpanElement: 'readonly',
         HTMLUListElement: 'readonly',
+        HTMLVideoElement: 'readonly',
         SVGSVGElement: 'readonly',
         Node: 'readonly',
         NodeListOf: 'readonly',
