@@ -1,15 +1,11 @@
 import * as serverOnly from '@sanity/react-loader';
 import { ClientPerspective } from 'next-sanity';
-import { client } from './lib/client';
+import { createServerClient } from './lib/client';
 
 const { loadQuery, setServerClient } = serverOnly;
 
 if (typeof window === 'undefined') {
-  setServerClient(
-    client.withConfig({
-      token: process.env.SANITY_VIEWER_TOKEN,
-    }),
-  );
+  setServerClient(createServerClient(process.env.SANITY_VIEWER_TOKEN));
 }
 
 const loadQueryOptions = (context: { draftMode?: boolean }) => {
