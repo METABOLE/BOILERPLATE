@@ -2,7 +2,7 @@ import useClearSiteData from '@/hooks/useClearSiteData';
 import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const getTimeRemaining = () => {
   try {
@@ -27,6 +27,19 @@ const PerformanceIndicator = () => {
   const { performanceLevel, executionTime, score, isLoading } = usePerformance();
   const { clearSiteData } = useClearSiteData();
   const [isHovered, setIsHovered] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState<string>('--');
+
+  useEffect(() => {
+    // Only run on client side
+    setTimeRemaining(getTimeRemaining());
+
+    // Update every minute
+    const interval = setInterval(() => {
+      setTimeRemaining(getTimeRemaining());
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleClick = async () => {
     if (
@@ -43,7 +56,9 @@ const PerformanceIndicator = () => {
       <div
         className={clsx(
           'absolute right-1/2 bottom-full mb-2 w-64 origin-bottom translate-x-1/2 rounded-lg border border-slate-400/30 bg-slate-900/95 p-3 text-sm shadow-xl backdrop-blur-xl transition-[opacity,scale]',
-          isHovered && !isLoading ? 'scale-100 opacity-100' : 'scale-90 opacity-0',
+          isHovered && !isLoading
+            ? 'pointer-events-auto visible scale-100 opacity-100'
+            : 'pointer-events-none invisible scale-90 opacity-0',
         )}
       >
         <div className="mb-2 flex items-center justify-between border-b border-slate-700 pb-2">
@@ -70,7 +85,7 @@ const PerformanceIndicator = () => {
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Cache expires in:</span>
-            <span className="font-mono text-xs text-slate-400">{getTimeRemaining()}</span>
+            <span className="font-mono text-xs text-slate-400">{timeRemaining}</span>
           </div>
         </div>
         <button
