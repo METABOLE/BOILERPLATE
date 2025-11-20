@@ -1,21 +1,10 @@
-import { useState, useEffect } from 'react';
-
 export const useEnvironment = () => {
-  const [isProd, setIsProd] = useState(true);
-  const [isDev, setIsDev] = useState(true);
-  const [environment, setEnvironment] = useState('production');
+  const isClient = typeof window !== 'undefined';
+  const hostname = isClient ? window.location.hostname : '';
 
-  useEffect(() => {
-    const isLocalhost =
-      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const isProd =
-      window.location.hostname === 'metabole.studio' ||
-      window.location.hostname === 'www.metabole.studio';
-
-    setIsDev(isLocalhost);
-    setIsProd(isProd);
-    setEnvironment(isLocalhost ? 'development' : 'production');
-  }, []);
+  const isDev = hostname === 'localhost' || hostname === '127.0.0.1';
+  const isProd = hostname === 'metabole.studio' || hostname === 'www.metabole.studio';
+  const environment = isDev ? 'development' : 'production';
 
   return {
     isProd,
