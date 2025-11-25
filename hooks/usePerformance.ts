@@ -26,7 +26,7 @@ interface PerformanceUtils {
   getConditionalProps: <T>(props: Record<PERFORMANCE_LEVEL, T>) => T | undefined;
 }
 
-const STORAGE_KEY = 'metabole_performance_metrics';
+export const STORAGE_KEY = 'performance-metrics';
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
 const THRESHOLDS = {

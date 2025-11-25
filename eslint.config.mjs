@@ -65,6 +65,7 @@ const eslintConfig = [
         cancelAnimationFrame: 'readonly',
         requestIdleCallback: 'readonly',
         cancelIdleCallback: 'readonly',
+        DeviceOrientationEvent: 'readonly',
 
         // Events
         MouseEvent: 'readonly',

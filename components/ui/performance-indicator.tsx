@@ -1,12 +1,12 @@
 import useClearSiteData from '@/hooks/useClearSiteData';
-import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { PERFORMANCE_LEVEL, STORAGE_KEY } from '@/hooks/usePerformance';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
 
 const getTimeRemaining = () => {
   try {
-    const cached = localStorage.getItem('metabole_performance_metrics');
+    const cached = localStorage.getItem(STORAGE_KEY);
     if (!cached) return 'no cache';
 
     const parsed = JSON.parse(cached);
@@ -52,7 +52,7 @@ const PerformanceIndicator = () => {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 z-999 -translate-x-1/2">
+    <div className="fixed bottom-4 left-1/2 z-9999 -translate-x-1/2">
       <div
         className={clsx(
           'absolute right-1/2 bottom-full mb-2 w-64 origin-bottom translate-x-1/2 rounded-lg border border-slate-400/30 bg-slate-900/95 p-3 text-sm shadow-xl backdrop-blur-xl transition-[opacity,scale]',
