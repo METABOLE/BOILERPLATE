@@ -24,16 +24,14 @@ const getTimeRemaining = () => {
 };
 
 const PerformanceIndicator = () => {
-  const { performanceLevel, executionTime, score, isLoading } = usePerformance();
+  const { performanceLevel, executionTime, score, isLoading, isIOS, iosVersion } = usePerformance();
   const { clearSiteData } = useClearSiteData();
   const [isHovered, setIsHovered] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState<string>('--');
 
   useEffect(() => {
-    // Only run on client side
     setTimeRemaining(getTimeRemaining());
 
-    // Update every minute
     const interval = setInterval(() => {
       setTimeRemaining(getTimeRemaining());
     }, 60000);
@@ -67,7 +65,6 @@ const PerformanceIndicator = () => {
             className={clsx(
               'rounded-full px-2 py-0.5 text-xs font-bold',
               performanceLevel === PERFORMANCE_LEVEL.HIGH && 'bg-green-500/20 text-green-400',
-              performanceLevel === PERFORMANCE_LEVEL.MEDIUM && 'bg-yellow-500/20 text-yellow-400',
               performanceLevel === PERFORMANCE_LEVEL.LOW && 'bg-red-500/20 text-red-400',
             )}
           >
@@ -83,6 +80,14 @@ const PerformanceIndicator = () => {
             <span className="text-slate-400">Score:</span>
             <span className="font-mono font-semibold">{score}/100</span>
           </div>
+          {isIOS && (
+            <div className="flex justify-between">
+              <span className="text-slate-400">iOS:</span>
+              <span className="font-mono text-xs font-semibold text-slate-200">
+                {iosVersion ? `iOS ${iosVersion}` : 'iOS (unknown version)'}
+              </span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="text-slate-400">Cache expires in:</span>
             <span className="font-mono text-xs text-slate-400">{timeRemaining}</span>
@@ -106,7 +111,6 @@ const PerformanceIndicator = () => {
           className={clsx(
             'flex h-2 w-2 items-center gap-2 rounded-full',
             performanceLevel === PERFORMANCE_LEVEL.HIGH && 'bg-green-500',
-            performanceLevel === PERFORMANCE_LEVEL.MEDIUM && 'bg-yellow-500',
             performanceLevel === PERFORMANCE_LEVEL.LOW && 'bg-red-500',
           )}
         />
