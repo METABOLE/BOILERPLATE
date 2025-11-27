@@ -1,5 +1,6 @@
 import useClearSiteData from '@/hooks/useClearSiteData';
 import { PERFORMANCE_LEVEL, STORAGE_KEY } from '@/hooks/usePerformance';
+import { useTouchDevice } from '@/hooks/useTouchDevice';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
@@ -24,7 +25,10 @@ const getTimeRemaining = () => {
 };
 
 const PerformanceIndicator = () => {
-  const { performanceLevel, executionTime, score, isLoading, isIOS, iosVersion } = usePerformance();
+  const { performanceLevel, executionTime, score, isLoading, os, osVersion, isOldOS } =
+    usePerformance();
+  const isTouchDevice = useTouchDevice();
+
   const { clearSiteData } = useClearSiteData();
   const [isHovered, setIsHovered] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState<string>('--');
@@ -72,19 +76,22 @@ const PerformanceIndicator = () => {
           </div>
         </div>
         <div className="space-y-1.5 text-slate-300">
-          <div className="flex justify-between">
-            <span className="text-slate-400">Animation Time:</span>
-            <span className="font-mono font-semibold">{executionTime.toFixed(0)}ms</span>
-          </div>
+          {executionTime !== 0 && (
+            <div className="flex justify-between">
+              <span className="text-slate-400">Animation Time:</span>
+              <span className="font-mono font-semibold">{executionTime.toFixed(0)}ms</span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="text-slate-400">Score:</span>
             <span className="font-mono font-semibold">{score}/100</span>
           </div>
-          {isIOS && (
+          {os && (
             <div className="flex justify-between">
-              <span className="text-slate-400">iOS:</span>
+              <span className="text-slate-400">OS:</span>
               <span className="font-mono text-xs font-semibold text-slate-200">
-                {iosVersion ? `iOS ${iosVersion}` : 'iOS (unknown version)'}
+                {os}
+                {osVersion ? ` ${osVersion}` : ' (unknown version)'}
               </span>
             </div>
           )}
@@ -103,7 +110,7 @@ const PerformanceIndicator = () => {
 
       <button
         className="flex cursor-pointer items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all hover:scale-105"
-        onClick={handleClick}
+        onClick={isTouchDevice ? undefined : handleClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -114,7 +121,9 @@ const PerformanceIndicator = () => {
             performanceLevel === PERFORMANCE_LEVEL.LOW && 'bg-red-500',
           )}
         />
-        <div className="text-xs opacity-75">{executionTime.toFixed(0)}ms</div>
+        <div className="text-xs opacity-75">
+          {isOldOS ? 'Old OS' : executionTime.toFixed(0) + 'ms'}
+        </div>
       </button>
     </div>
   );
