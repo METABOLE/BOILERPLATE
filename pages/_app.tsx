@@ -35,7 +35,7 @@ function AppContent({
 
   return (
     <>
-      <Layout samples={globalProps.samples}>
+      <Layout>
         <Component {...pageProps} {...globalProps} />
       </Layout>
     </>

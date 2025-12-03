@@ -26,7 +26,6 @@ export default defineConfig({
     // visionTool({ defaultApiVersion: apiVersion }),
     presentationTool({
       previewUrl: {
-        // Add a new ENV var to your Studio codebase if needed to accomodate live vs local preview.
         origin: process.env.NEXT_PUBLIC_SANITY_STUDIO_URL || 'http://localhost:3000',
         preview: '/',
         previewMode: {
@@ -34,6 +33,7 @@ export default defineConfig({
           disable: '/api/disable-draft',
         },
       },
+      allowOrigins: [process.env.NEXT_PUBLIC_SANITY_STUDIO_URL || 'http://localhost:3000'],
     }),
   ],
 });
