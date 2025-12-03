@@ -1,8 +1,8 @@
 import { createDataAttribute } from '@/services/sanity.service';
 import { useMemo } from 'react';
-import type { SanityPageProps } from '@/types';
+import type { SanityProps } from '@/types';
 
-export function useSanityData<T>(props: SanityPageProps<T>) {
+export function useSanityData<T>(props: SanityProps<T>) {
   const encodeDataAttribute = useMemo(
     () => createDataAttribute(props.initial.data, props.initial.sourceMap, props.draftMode),
     [props.initial.data, props.initial.sourceMap, props.draftMode],

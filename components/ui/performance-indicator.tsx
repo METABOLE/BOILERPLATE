@@ -1,9 +1,9 @@
 import useClearSiteData from '@/hooks/useClearSiteData';
 import { PERFORMANCE_LEVEL, STORAGE_KEY } from '@/hooks/usePerformance';
-import { useTouchDevice } from '@/hooks/useTouchDevice';
+import { isTouchDevice } from '@/hooks/useTouchDevice';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const getTimeRemaining = () => {
   try {
@@ -27,7 +27,6 @@ const getTimeRemaining = () => {
 const PerformanceIndicator = () => {
   const { performanceLevel, executionTime, score, isLoading, os, osVersion, isOldOS } =
     usePerformance();
-  const isTouchDevice = useTouchDevice();
 
   const { clearSiteData } = useClearSiteData();
   const [isHovered, setIsHovered] = useState(false);
@@ -110,7 +109,7 @@ const PerformanceIndicator = () => {
 
       <button
         className="flex cursor-pointer items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all hover:scale-105"
-        onClick={isTouchDevice ? undefined : handleClick}
+        onClick={isTouchDevice() ? undefined : handleClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

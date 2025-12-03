@@ -1,6 +1,6 @@
 import type { ContentSourceMap } from '@sanity/client';
 
-export interface SanityPageProps<T> {
+export interface SanityProps<T> {
   initial: {
     data: T;
     sourceMap?: ContentSourceMap;

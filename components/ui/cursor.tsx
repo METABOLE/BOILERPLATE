@@ -1,4 +1,4 @@
-import { useTouchDevice } from '@/hooks/useTouchDevice';
+import { isTouchDevice } from '@/hooks/useTouchDevice';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -11,8 +11,6 @@ enum CURSOR_STATE {
 }
 
 const Cursor = () => {
-  const isTouchDevice = useTouchDevice();
-
   const { contextSafe } = useGSAP();
   const pathname = usePathname();
   const pointerRefs = {
@@ -69,7 +67,7 @@ const Cursor = () => {
 
   useEffect(() => {
     // Ne pas ajouter les event listeners sur les appareils tactiles
-    if (isTouchDevice) return;
+    if (isTouchDevice()) return;
 
     observerRef.current = new MutationObserver(() => {
       manageCursorEvents('removeEventListener');
@@ -99,7 +97,7 @@ const Cursor = () => {
     }, 500);
   }, [pathname]);
 
-  if (isTouchDevice) return null;
+  if (isTouchDevice()) return null;
 
   return (
     <>

@@ -32,7 +32,6 @@ const ScrollingContainer = forwardRef<
       repeat: -1,
       ease: 'none',
       paused: false,
-      timeScale: 0,
     });
 
     infiniteAnimationRef.current.push(tween);
