@@ -1,9 +1,9 @@
 import { gsap } from 'gsap';
 import { MouseEvent } from 'react';
-import { useTouchDevice } from './useTouchDevice';
+import { isTouchDevice } from './useTouchDevice';
 
 export const useMagnet = (event: MouseEvent<HTMLElement>, speed: number) => {
-  if (useTouchDevice()) return;
+  if (isTouchDevice()) return;
   const bounding = event.currentTarget.getBoundingClientRect();
   const { width, height, left, top } = bounding;
   const x = ((event.clientX - left) / width - 0.5) * (30 * speed);
@@ -17,7 +17,7 @@ export const useMagnet = (event: MouseEvent<HTMLElement>, speed: number) => {
 };
 
 export const useResetMagnet = (event: MouseEvent<HTMLElement>) => {
-  if (useTouchDevice()) return;
+  if (isTouchDevice()) return;
   gsap.to(event.currentTarget, {
     duration: 1,
     ease: 'elastic.out',
