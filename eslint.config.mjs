@@ -51,10 +51,13 @@ const eslintConfig = [
         HTMLSpanElement: 'readonly',
         HTMLUListElement: 'readonly',
         HTMLVideoElement: 'readonly',
+        HTMLAnchorElement: 'readonly',
         SVGSVGElement: 'readonly',
         Node: 'readonly',
         NodeListOf: 'readonly',
         Element: 'readonly',
+        Event: 'readonly',
+        DOMRect: 'readonly',
 
         // Browser APIs
         setTimeout: 'readonly',
