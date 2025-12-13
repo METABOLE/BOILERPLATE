@@ -46,15 +46,6 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const { pathname } = useRouter();
   const { draftMode } = globalProps;
 
-  console.info(
-    '%c Designed & Coded by METABOLE:',
-    'background: #1b17ee; color: white !important; padding: 8px 12px; border-radius: 4px; font-weight: bold;',
-  );
-  console.info(
-    '%c https://metabole.studio/ ',
-    'background: #f1f2ff; color: white !important; padding: 8px 12px; border-radius: 4px; font-weight: bold;',
-  );
-
   return (
     <>
       {pathname.includes('/studio') ? (
@@ -73,7 +64,7 @@ App.getInitialProps = async (context: AppContext) => {
   if (!context.ctx.req) {
     return {
       globalProps: {
-        montages: {
+        samples: {
           initial: { data: [] },
           draftMode: false,
         },
