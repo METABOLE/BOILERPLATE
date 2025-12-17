@@ -14,10 +14,6 @@ export const useGyroscope = () => {
   });
 
   const hasRequestedRef = useRef(false);
-  const lastGammaRef = useRef<number | null>(null);
-  const lastBetaRef = useRef<number | null>(null);
-  const accumulatedXRef = useRef<number>(0);
-  const accumulatedYRef = useRef<number>(0);
 
   useEffect(() => {
     const requestPermission = async (): Promise<boolean> => {
@@ -44,37 +40,9 @@ export const useGyroscope = () => {
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       if (event.beta === null || event.gamma === null) return;
 
-      // Initialisation
-      if (lastGammaRef.current === null || lastBetaRef.current === null) {
-        lastGammaRef.current = event.gamma;
-        lastBetaRef.current = event.beta;
-        setValue({ x: 0, y: 0, isActive: true });
-        return;
-      }
-
-      // Calcul des différences
-      let deltaGamma = event.gamma - lastGammaRef.current;
-      let deltaBeta = event.beta - lastBetaRef.current;
-
-      // Correction du wrap-around pour gamma (-90 à 90)
-      if (deltaGamma > 90) deltaGamma -= 180;
-      if (deltaGamma < -90) deltaGamma += 180;
-
-      // Correction du wrap-around pour beta (0 à 180)
-      if (deltaBeta > 90) deltaBeta -= 180;
-      if (deltaBeta < -90) deltaBeta += 180;
-
-      // Accumulation
-      accumulatedXRef.current += deltaGamma / 45;
-      accumulatedYRef.current += deltaBeta / 45;
-
-      // Mise à jour
-      lastGammaRef.current = event.gamma;
-      lastBetaRef.current = event.beta;
-
       setValue({
-        x: accumulatedXRef.current,
-        y: accumulatedYRef.current,
+        x: event.beta, // [-180,180]
+        y: event.gamma, // [-90,90]
         isActive: true,
       });
     };
