@@ -1,4 +1,4 @@
-import { isTouchDevice } from '@/hooks/useTouchDevice';
+import { useTouchDevice } from '@/hooks/useTouchDevice';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -21,6 +21,7 @@ const Cursor = () => {
 
   const [cursorState, setCursorState] = useState(CURSOR_STATE.DEFAULT);
   const [isActive, setIsActive] = useState(false);
+  const isTouch = useTouchDevice();
 
   const cursorStateHandlers = {
     changeToButton: useCallback(() => setCursorState(CURSOR_STATE.POINTER), []),
@@ -66,8 +67,7 @@ const Cursor = () => {
   );
 
   useEffect(() => {
-    // Ne pas ajouter les event listeners sur les appareils tactiles
-    if (isTouchDevice()) return;
+    if (isTouch) return;
 
     observerRef.current = new MutationObserver(() => {
       manageCursorEvents('removeEventListener');
@@ -89,7 +89,7 @@ const Cursor = () => {
       manageCursorEvents('removeEventListener');
       observerRef.current?.disconnect();
     };
-  }, [cursorHandlers, manageCursorEvents, isTouchDevice]);
+  }, [cursorHandlers, manageCursorEvents, isTouch]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -97,7 +97,7 @@ const Cursor = () => {
     }, 500);
   }, [pathname]);
 
-  if (isTouchDevice()) return null;
+  if (isTouch) return null;
 
   return (
     <>

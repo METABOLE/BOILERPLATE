@@ -1,6 +1,6 @@
 import useClearSiteData from '@/hooks/useClearSiteData';
 import { PERFORMANCE_LEVEL, STORAGE_KEY } from '@/hooks/usePerformance';
-import { isTouchDevice } from '@/hooks/useTouchDevice';
+import { useTouchDevice } from '@/hooks/useTouchDevice';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -30,6 +30,7 @@ const LONG_PRESS_DURATION = 1000;
 const PerformanceIndicator = () => {
   const { performanceLevel, executionTime, score, isLoading, os, osVersion, isOldOS } =
     usePerformance();
+  const isTouch = useTouchDevice();
 
   const { clearSiteData } = useClearSiteData();
   const [isHovered, setIsHovered] = useState(false);
@@ -197,7 +198,7 @@ const PerformanceIndicator = () => {
 
       <button
         className="relative cursor-pointer overflow-hidden rounded-full border border-slate-400/30 bg-slate-300/30 text-sm font-medium shadow-lg transition-all select-none hover:scale-105"
-        onClick={isTouchDevice() ? undefined : handleClick}
+        onClick={isTouch ? undefined : handleClick}
         onMouseDown={handleLongPressStart}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
