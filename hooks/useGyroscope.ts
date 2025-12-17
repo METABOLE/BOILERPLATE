@@ -1,15 +1,15 @@
 import { useEffect, useState, useRef } from 'react';
 
 interface Gyroscope {
-  x: number | null;
-  y: number | null;
+  x: number;
+  y: number;
   isActive: boolean;
 }
 
 export const useGyroscope = () => {
   const [value, setValue] = useState<Gyroscope>({
-    x: null,
-    y: null,
+    x: 0,
+    y: 0,
     isActive: false,
   });
 

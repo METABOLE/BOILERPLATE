@@ -28,8 +28,8 @@ export default function Page({ samples }: InferGetStaticPropsType<typeof getStat
 
   useGSAP(() => {
     gsap.to(dotRef.current, {
-      x: x ? x * 150 : 0,
-      y: y ? y * 150 : 0,
+      x: x * 150,
+      y: y * 150,
       duration: 0.1,
       ease: 'power2.out',
     });
