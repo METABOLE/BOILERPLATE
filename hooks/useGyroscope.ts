@@ -40,9 +40,14 @@ export const useGyroscope = () => {
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       if (event.beta === null || event.gamma === null) return;
 
+      let { beta, gamma } = event;
+
+      if (beta > 90) beta = 90;
+      if (beta < -90) beta = -90;
+
       setValue({
-        x: event.beta, // [-180,180]
-        y: event.gamma, // [-90,90]
+        x: gamma / 90,
+        y: beta / 90,
         isActive: true,
       });
     };
