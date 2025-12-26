@@ -34,7 +34,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       ) : (
         <>
           <Header />
-          <main className="min-h-screen w-screen overflow-hidden">{children}</main>
+          <main className="min-h-screen w-screen">{children}</main>
           <Footer />
         </>
       )}
