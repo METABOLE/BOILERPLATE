@@ -1,3 +1,4 @@
+import PageTransition from '@/components/layout/page-transition';
 import SanityVisualEditing from '@/components/sanity/sanity-visual-editing';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
@@ -5,6 +6,8 @@ import { fetchSamples } from '@/services/sample.service';
 import '@/styles/main.scss';
 import '@/styles/tailwind.css';
 import { Sample } from '@/types';
+import { AnimatePresence } from 'framer-motion';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AppContext, AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 
@@ -15,15 +18,10 @@ interface CustomAppProps extends AppProps {
   };
 }
 
-function AppContent({
-  Component,
-  pageProps,
-  globalProps,
-}: {
-  Component: CustomAppProps['Component'];
-  pageProps: CustomAppProps['pageProps'];
-  globalProps: CustomAppProps['globalProps'];
-}) {
+function App({ Component, pageProps, globalProps }: CustomAppProps) {
+  const { pathname } = useRouter();
+  const { draftMode } = globalProps;
+
   console.info(
     '%c Designed & Coded by METABOLE:',
     'background: #1b17ee; color: white !important; padding: 8px 12px; border-radius: 4px; font-weight: bold;',
@@ -35,24 +33,25 @@ function AppContent({
 
   return (
     <>
-      <Layout>
-        <Component {...pageProps} {...globalProps} />
-      </Layout>
-    </>
-  );
-}
-
-function App({ Component, pageProps, globalProps }: CustomAppProps) {
-  const { pathname } = useRouter();
-  const { draftMode } = globalProps;
-
-  return (
-    <>
       {pathname.includes('/studio') ? (
         <Component {...pageProps} />
       ) : (
         <AppProvider>
-          <AppContent Component={Component} globalProps={globalProps} pageProps={pageProps} />
+          <Layout>
+            <AnimatePresence
+              mode="wait"
+              onExitComplete={() => {
+                setTimeout(() => {
+                  window.scrollTo(0, 0);
+                  ScrollTrigger.refresh();
+                }, 100);
+              }}
+            >
+              <PageTransition key={pathname}>
+                <Component {...pageProps} {...globalProps} />
+              </PageTransition>
+            </AnimatePresence>
+          </Layout>
         </AppProvider>
       )}
       {draftMode && <SanityVisualEditing />}

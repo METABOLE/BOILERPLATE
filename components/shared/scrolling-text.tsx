@@ -17,6 +17,8 @@ const ScrollingText = ({
   endColor?: string;
 }) => {
   const textRef = useRef<HTMLElement>(null);
+  const splitInstanceRef = useRef<SplitText | null>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const { contextSafe } = useGSAP();
 
@@ -26,6 +28,8 @@ const ScrollingText = ({
     const splitWord = new SplitText(textRef.current.children, {
       type: 'words',
     });
+
+    splitInstanceRef.current = splitWord;
 
     const words = splitWord.words || [];
     if (!words.length) return;
@@ -54,6 +58,8 @@ const ScrollingText = ({
       },
     });
 
+    timelineRef.current = tl;
+
     words.forEach((word) => {
       tl.to(word, {
         backgroundPosition: '0% 100%',
@@ -63,7 +69,15 @@ const ScrollingText = ({
     });
   });
 
+  const cleanup = contextSafe(() => {
+    if (splitInstanceRef.current) {
+      splitInstanceRef.current.revert();
+      splitInstanceRef.current = null;
+    }
+  });
+
   useGSAP(() => {
+    cleanup();
     scrollAnimation();
   }, [startColor, endColor]);
 
