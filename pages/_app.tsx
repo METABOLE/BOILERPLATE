@@ -9,7 +9,7 @@ import { Sample } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AppContext, AppProps } from 'next/app';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 interface CustomAppProps extends AppProps {
   globalProps: {
@@ -19,7 +19,7 @@ interface CustomAppProps extends AppProps {
 }
 
 function App({ Component, pageProps, globalProps }: CustomAppProps) {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const { draftMode } = globalProps;
 
   console.info(

@@ -12,6 +12,7 @@ import { SplitText } from 'gsap/SplitText';
 import { ReactNode, useEffect } from 'react';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { isProd } = useEnvironment();
