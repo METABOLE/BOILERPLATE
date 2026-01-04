@@ -58,7 +58,7 @@ export default function Page({ samples }: InferGetStaticPropsType<typeof getStat
         </>
       )}
 
-      <Hero data={samplesData.data} encodeDataAttribute={samplesData.encodeDataAttribute} />
+      {/* <Hero data={samplesData.data} encodeDataAttribute={samplesData.encodeDataAttribute} /> */}
     </>
   );
 }

@@ -34,9 +34,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <div className="bg-blue fixed inset-0 z-9998" />
       ) : (
         <>
-          <Header />
+          {/* <Header /> */}
           <main className="min-h-screen w-screen">{children}</main>
-          <Footer />
+          {/* <Footer /> */}
         </>
       )}
 
