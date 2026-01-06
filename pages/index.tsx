@@ -40,7 +40,7 @@ export default function Page({ samples }: InferGetStaticPropsType<typeof getStat
       {isTouch ? <p>Touch device 📱</p> : <p>Non-touch device 💻</p>}
 
       {isActive && (
-        <div className="flex h-screen w-screen flex-col items-center justify-center pb-[20vh]">
+        <>
           <div>
             <p>gamma (horizontal): {x?.toFixed(2)}</p>
             <p>beta (vertical): {y?.toFixed(2)}</p>
@@ -55,10 +55,10 @@ export default function Page({ samples }: InferGetStaticPropsType<typeof getStat
               }}
             />
           </div>
-        </div>
+        </>
       )}
 
-      {/* <Hero data={samplesData.data} encodeDataAttribute={samplesData.encodeDataAttribute} /> */}
+      <Hero data={samplesData.data} encodeDataAttribute={samplesData.encodeDataAttribute} />
     </>
   );
 }
