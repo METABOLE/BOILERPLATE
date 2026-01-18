@@ -1,5 +1,4 @@
 import { useGSAP } from '@gsap/react';
-import clsx from 'clsx';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { forwardRef, ReactNode, RefObject, useImperativeHandle, useRef } from 'react';
@@ -82,7 +81,7 @@ const ScrollingContainer = forwardRef<
   }, [scrollSpeed]);
 
   return (
-    <div className={clsx('', className)}>
+    <div className={className}>
       <div
         ref={scrollContainer}
         className="flex w-screen flex-row items-center"
