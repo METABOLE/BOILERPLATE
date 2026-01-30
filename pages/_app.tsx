@@ -8,6 +8,7 @@ import '@/styles/tailwind.css';
 import { Sample } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLenis } from 'lenis/react';
 import type { AppContext, AppProps } from 'next/app';
 import { usePathname } from 'next/navigation';
 
@@ -20,6 +21,7 @@ interface CustomAppProps extends AppProps {
 
 function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const pathname = usePathname();
+  const lenis = useLenis();
   const { draftMode } = globalProps;
 
   console.info(
@@ -41,10 +43,14 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
             <AnimatePresence
               mode="wait"
               onExitComplete={() => {
-                setTimeout(() => {
+                if (lenis) {
+                  lenis.scrollTo(0, { immediate: true });
+                } else {
                   window.scrollTo(0, 0);
+                }
+                requestAnimationFrame(() => {
                   ScrollTrigger.refresh();
-                }, 100);
+                });
               }}
             >
               <PageTransition key={pathname}>

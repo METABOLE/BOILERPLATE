@@ -1,5 +1,5 @@
 import { useLenis } from 'lenis/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const globalScrollState = {
   isLocked: false,
@@ -18,7 +18,6 @@ const updateScrollState = (isLocked: boolean) => {
 export const useScroll = () => {
   const [isLocked, setIsLocked] = useState(globalScrollState.isLocked);
   const lenis = useLenis();
-  const pendingActionRef = useRef<boolean | null>(null);
 
   useEffect(() => {
     const listener = () => setIsLocked(globalScrollState.isLocked);
@@ -28,28 +27,29 @@ export const useScroll = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (lenis && pendingActionRef.current !== null) {
-      const shouldLock = pendingActionRef.current;
-      pendingActionRef.current = null;
-
-      if (shouldLock) {
-        lenis.scrollTo(0, { immediate: true });
-        lenis.stop();
-        updateScrollState(true);
-      } else {
-        lenis.start();
-        updateScrollState(false);
-      }
-    }
-  }, [lenis]);
-
-  const lockScroll = (shouldLock: boolean) => {
+  const lockScroll = () => {
     if (!lenis) {
-      pendingActionRef.current = shouldLock;
+      console.warn('Lenis is not initialized yet');
       return;
     }
+    lenis.stop();
+    updateScrollState(true);
+  };
 
+  const unlockScroll = () => {
+    if (!lenis) {
+      console.warn('Lenis is not initialized yet');
+      return;
+    }
+    lenis.start();
+    updateScrollState(false);
+  };
+
+  const resetScroll = (shouldLock: boolean) => {
+    if (!lenis) {
+      console.warn('Lenis is not initialized yet');
+      return;
+    }
     if (shouldLock) {
       lenis.scrollTo(0, { immediate: true });
       lenis.stop();
@@ -60,5 +60,5 @@ export const useScroll = () => {
     }
   };
 
-  return { isLocked, lockScroll };
+  return { isLocked, resetScroll, lockScroll, unlockScroll };
 };
