@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 
-export function useFontReady() {
+export function useFontReadyHook() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     document.fonts.load('1rem "Sample"').then(() => {
-      setReady(true);
+      document.fonts.load('1rem "Sample2"').then(() => {
+        setReady(true);
+      });
     });
   }, []);
 
