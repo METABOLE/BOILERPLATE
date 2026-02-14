@@ -1,3 +1,4 @@
+import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
 import typescriptParser from '@typescript-eslint/parser';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
@@ -9,7 +10,20 @@ import prettierPlugin from 'eslint-plugin-prettier';
 
 const eslintConfig = [
   {
-    ignores: ['**/node_modules', '**/.next', '**/.vercel', './next-env.d.ts'],
+    ignores: [
+      '**/node_modules',
+      '**/.next',
+      '**/.vercel',
+      './next-env.d.ts',
+      // Config and tooling files (not app code; avoids React plugin + ESLint 10 API issues)
+      '.prettierrc.js',
+      'eslint.config.mjs',
+      'next.config.*',
+      'postcss.config.*',
+      'tailwind.config.*',
+      'sanity.config.*',
+      'sanity.cli.*',
+    ],
   },
   js.configs.recommended,
   {
@@ -82,7 +96,7 @@ const eslintConfig = [
     },
     plugins: {
       '@typescript-eslint': typescriptPlugin,
-      react: reactPlugin,
+      react: fixupPluginRules(reactPlugin),
       'react-hooks': reactHooksPlugin,
       '@next/next': nextPlugin,
       prettier: prettierPlugin,
