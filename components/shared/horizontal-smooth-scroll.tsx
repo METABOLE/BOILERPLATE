@@ -1,14 +1,19 @@
 import clsx from 'clsx';
 import gsap from 'gsap';
+import { LenisOptions } from 'lenis';
 import ReactLenis, { LenisRef } from 'lenis/react';
 import { ReactNode, useEffect, useRef } from 'react';
 
 const HorizontalSmoothScroll = ({
+  id,
   children,
   className,
+  options,
 }: {
+  id?: string;
   children: ReactNode;
   className?: string;
+  options?: LenisOptions;
 }) => {
   const lenisRef = useRef<LenisRef>(null);
 
@@ -22,17 +27,23 @@ const HorizontalSmoothScroll = ({
     return () => gsap.ticker.remove(update);
   }, []);
 
+  const defaultOptions: LenisOptions = {
+    autoRaf: options?.autoRaf ?? false,
+    orientation: options?.orientation ?? 'horizontal',
+    gestureOrientation: options?.gestureOrientation ?? 'horizontal',
+    overscroll: options?.overscroll ?? true,
+    lerp: options?.lerp ?? 0.2,
+  };
+
   return (
     <>
       <ReactLenis
         ref={lenisRef}
         className={clsx('no-scrollbar overflow-scroll', className)}
+        id={id}
         options={{
-          autoRaf: false,
-          orientation: 'horizontal',
-          gestureOrientation: 'horizontal',
-          overscroll: true,
-          lerp: 0.2,
+          ...defaultOptions,
+          ...options,
         }}
       >
         {children}
