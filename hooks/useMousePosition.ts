@@ -1,21 +1,48 @@
-import { RefObject, useEffect, useRef } from 'react';
+import { useEffect, useState, RefObject } from 'react';
+import { useTouchDevice } from '@/hooks/useTouchDevice';
 
-interface MousePosition {
+export interface Position {
   x: number;
   y: number;
 }
 
-export const useMousePosition = (
-  onMouseMove?: (x: number, y: number) => void,
-  containerRef?: RefObject<HTMLElement | null>,
-) => {
-  const mousePositionRef = useRef<MousePosition>({ x: 0, y: 0 });
-  const callbackRef = useRef(onMouseMove);
+export interface UseMousePositionOptions {
+  listenTouch?: boolean;
+}
 
-  callbackRef.current = onMouseMove;
+const getCenter = (): Position => {
+  if (typeof window === 'undefined') return { x: 0, y: 0 };
+  return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+};
+
+export const useMousePosition = (
+  containerRefOrOptions?:
+    | RefObject<HTMLElement | null>
+    | { containerRef?: RefObject<HTMLElement | null>; options?: UseMousePositionOptions },
+  optionsArg?: UseMousePositionOptions,
+) => {
+  const isConfigObject =
+    typeof containerRefOrOptions === 'object' &&
+    containerRefOrOptions !== null &&
+    ('containerRef' in containerRefOrOptions || 'options' in containerRefOrOptions);
+  const { containerRef, options } = isConfigObject
+    ? {
+        containerRef: (containerRefOrOptions as { containerRef?: RefObject<HTMLElement | null> })
+          .containerRef,
+        options: (containerRefOrOptions as { options?: UseMousePositionOptions }).options,
+      }
+    : {
+        containerRef: containerRefOrOptions as RefObject<HTMLElement | null> | undefined,
+        options: optionsArg,
+      };
+
+  const isTouch = useTouchDevice();
+  const [mousePosition, setMousePosition] = useState<Position>(getCenter);
 
   useEffect(() => {
     let cachedRect: DOMRect | null = null;
+    const useTouch = options?.listenTouch ?? isTouch ?? false;
+    setMousePosition(getCenter());
 
     const updateCachedRect = () => {
       if (containerRef?.current) {
@@ -23,42 +50,65 @@ export const useMousePosition = (
       }
     };
 
-    const handleMouseMove = (event: Event) => {
-      const mouseEvent = event as MouseEvent;
-      let position: MousePosition;
-
+    const toPosition = (clientX: number, clientY: number): Position => {
       if (containerRef?.current && cachedRect) {
-        position = {
-          x: mouseEvent.clientX - cachedRect.left,
-          y: mouseEvent.clientY - cachedRect.top,
-        };
-      } else {
-        position = {
-          x: mouseEvent.clientX,
-          y: mouseEvent.clientY,
+        return {
+          x: clientX - cachedRect.left,
+          y: clientY - cachedRect.top,
         };
       }
-
-      mousePositionRef.current = position;
-
-      if (callbackRef.current) {
-        callbackRef.current(position.x, position.y);
-      }
+      return { x: clientX, y: clientY };
     };
 
     updateCachedRect();
+    const touchElement = containerRef?.current ?? window;
 
-    const element = containerRef?.current || window;
-    element.addEventListener('mousemove', handleMouseMove);
+    const handleMouseMove = (event: Event) => {
+      const e = event as MouseEvent;
+      setMousePosition(toPosition(e.clientX, e.clientY));
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', updateCachedRect);
     window.addEventListener('scroll', updateCachedRect);
 
+    let cleanup: () => void;
+
+    if (useTouch) {
+      const handleTouchStart = (event: Event) => {
+        const e = event as TouchEvent;
+        const [touch] = e.touches;
+        if (touch) {
+          setMousePosition(toPosition(touch.clientX, touch.clientY));
+        }
+      };
+
+      const handleTouchMove = (event: Event) => {
+        const e = event as TouchEvent;
+        const [touch] = e.touches;
+        if (touch) {
+          setMousePosition(toPosition(touch.clientX, touch.clientY));
+        }
+      };
+
+      touchElement.addEventListener('touchstart', handleTouchStart, { passive: true });
+      touchElement.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+      cleanup = () => {
+        touchElement.removeEventListener('touchstart', handleTouchStart);
+        touchElement.removeEventListener('touchmove', handleTouchMove);
+      };
+    } else {
+      cleanup = () => {};
+    }
+
     return () => {
-      element.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', updateCachedRect);
       window.removeEventListener('scroll', updateCachedRect);
+      cleanup();
     };
-  }, [containerRef]);
+  }, [containerRef, options?.listenTouch, isTouch]);
 
-  return mousePositionRef;
+  return { mousePosition };
 };
