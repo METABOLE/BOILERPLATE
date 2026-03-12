@@ -61,7 +61,7 @@ const SEO = ({
       <meta content="sample, Sample, SAMPLE," name="keywords" />
 
       {/* Favicon */}
-      <link href="/favicon.svg" rel="icon" />
+      <link href="/favicon.ico" rel="icon" />
     </Head>
   );
 };
