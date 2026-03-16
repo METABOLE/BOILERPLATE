@@ -4,7 +4,7 @@
   "private": true,
   "resolutions": {
     "@sanity/schema": "5.16.0",
-    "sanity/@sanity/schema": "5.16.0"
+    "**/@sanity/schema": "5.16.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -20,6 +20,7 @@
     "@gsap/react": "^2.1.2",
     "@number-flow/react": "^0.6.0",
     "@sanity/image-url": "^2.0.3",
+    "@sanity/schema": "5.16.0",
     "@sanity/orderable-document-list": "^1.5.1",
     "@sanity/preview-url-secret": "^4.0.3",
     "@sanity/react-loader": "^2",
