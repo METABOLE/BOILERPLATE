@@ -3800,17 +3800,17 @@
     postcss "^8.5.6"
     tailwindcss "4.2.2"
 
-"@tanstack/query-core@5.99.0":
-  version "5.99.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.99.0.tgz#d45dca04cdf8bc68ba4f02e11a6a7e00cc04f79b"
-  integrity sha512-3Jv3WQG0BCcH7G+7lf/bP8QyBfJOXeY+T08Rin3GZ1bshvwlbPt7NrDHMEzGdKIOmOzvIQmxjk28YEQX60k7pQ==
+"@tanstack/query-core@5.99.1":
+  version "5.99.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.99.1.tgz#aecf8f18ba3216cfb7f3df988c4f3198a69ff6a4"
+  integrity sha512-5E8xwxyWvr22yt7zvzP3KOZ5TUElOdVA45NP3/Ao1m9mvc9i18NLTDe9m3M00BH2DR5J20cv7xckMPlhKNs+vQ==
 
-"@tanstack/react-query@^5.99.0":
-  version "5.99.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.99.0.tgz#ac58c112aa77c8172b7c81bcd1cef3df89eece72"
-  integrity sha512-OY2bCqPemT1LlqJ8Y2CUau4KELnIhhG9Ol3ZndPbdnB095pRbPo1cHuXTndg8iIwtoHTgwZjyaDnQ0xD0mYwAw==
+"@tanstack/react-query@^5.99.1":
+  version "5.99.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.99.1.tgz#8410b8ebfe7d2a5964c771a8591c98f5d57d5f38"
+  integrity sha512-akg5GdwW70lvJvCqVHZ7tizGyc+TATjUzKX9RuF1xknhEe/1leofXk7YLYbrbRsuhNbHJBAayaQUMvvOFZ5L5g==
   dependencies:
-    "@tanstack/query-core" "5.99.0"
+    "@tanstack/query-core" "5.99.1"
 
 "@tanstack/react-table@^8.21.3":
   version "8.21.3"
@@ -4775,10 +4775,10 @@ baseline-browser-mapping@^2.10.12, baseline-browser-mapping@^2.9.19:
   resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.10.16.tgz#ef80cf218a53f165689a6e32ffffdca1f35d979c"
   integrity sha512-Lyf3aK28zpsD1yQMiiHD4RvVb6UdMoo8xzG2XzFIfR9luPzOpcBlAsT/qfB1XWS1bxWT+UtE4WmQgsp297FYOA==
 
-baseline-browser-mapping@^2.10.19:
-  version "2.10.19"
-  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.10.19.tgz#7697721c22f94f66195d0c34299b1a91e3299493"
-  integrity sha512-qCkNLi2sfBOn8XhZQ0FXsT1Ki/Yo5P90hrkRamVFRS7/KV9hpfA4HkoWNU152+8w0zPjnxo5psx5NL3PSGgv5g==
+baseline-browser-mapping@^2.10.20:
+  version "2.10.20"
+  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.10.20.tgz#7c99b86d43ae9be3810cac515f4675802e1f6b87"
+  integrity sha512-1AaXxEPfXT+GvTBJFuy4yXVHWJBXa4OdbIebGN/wX5DlsIkU0+wzGnd2lOzokSk51d5LUmqjgBLRLlypLUqInQ==
 
 before-after-hook@^4.0.0:
   version "4.0.0"
@@ -5880,10 +5880,21 @@ eslint-plugin-prettier@^5.5.5:
     prettier-linter-helpers "^1.0.1"
     synckit "^0.11.12"
 
-eslint-plugin-react-hooks@^7.0.0, eslint-plugin-react-hooks@^7.0.1:
+eslint-plugin-react-hooks@^7.0.0:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-7.0.1.tgz#66e258db58ece50723ef20cc159f8aa908219169"
   integrity sha512-O0d0m04evaNzEPoSW+59Mezf8Qt0InfgGIBJnpC0h3NH/WjUAR7BIKUfysC6todmtiZ/A0oUVS8Gce0WhBrHsA==
+  dependencies:
+    "@babel/core" "^7.24.4"
+    "@babel/parser" "^7.24.4"
+    hermes-parser "^0.25.1"
+    zod "^3.25.0 || ^4.0.0"
+    zod-validation-error "^3.5.0 || ^4.0.0"
+
+eslint-plugin-react-hooks@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-7.1.1.tgz#e6742cad75d970c0a3f30d7d3fa80a4784f55927"
+  integrity sha512-f2I7Gw6JbvCexzIInuSbZpfdQ44D7iqdWX01FKLvrPgqxoE7oMj8clOfto8U6vYiz4yd5oKu39rRSVOe1zRu0g==
   dependencies:
     "@babel/core" "^7.24.4"
     "@babel/parser" "^7.24.4"
@@ -8009,16 +8020,16 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next-sanity@^12.2.2:
-  version "12.2.2"
-  resolved "https://registry.yarnpkg.com/next-sanity/-/next-sanity-12.2.2.tgz#5de147e132595f5709f18780d3ce515899054f99"
-  integrity sha512-5rj5t305E0jdJuM5OAS18sOkV5M/Ce9BWgXjO8P1rxv1tZ22OigqEp/Yk5+1Ht5/Ht4/AZverDrHkGQM8MdLeA==
+next-sanity@^12.3.0:
+  version "12.3.0"
+  resolved "https://registry.yarnpkg.com/next-sanity/-/next-sanity-12.3.0.tgz#9924428eaefa4e7c39b91ee1eeaca6aa578867a9"
+  integrity sha512-sL13/ugOQGcOwDk35kS65g6gaI45FiHAsKMvtJn33E5XCbvAXbmi44vhzSoG1SpcuCUtGKos58Ru8nydm69wfw==
   dependencies:
     "@portabletext/react" "^6.0.3"
-    "@sanity/client" "^7.20.0"
+    "@sanity/client" "^7.21.0"
     "@sanity/comlink" "^4.0.1"
     "@sanity/presentation-comlink" "^2.0.1"
-    "@sanity/preview-url-secret" "^4.0.4"
+    "@sanity/preview-url-secret" "^4.0.5"
     "@sanity/visual-editing" "^5.3.3"
     "@sanity/webhook" "^4.0.4"
     dequal "^2.0.3"
@@ -10170,10 +10181,10 @@ typescript-eslint@^8.46.0:
     "@typescript-eslint/typescript-estree" "8.58.1"
     "@typescript-eslint/utils" "8.58.1"
 
-typescript@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-6.0.2.tgz#0b1bfb15f68c64b97032f3d78abbf98bdbba501f"
-  integrity sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==
+typescript@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-6.0.3.tgz#90251dc007916e972786cb94d74d15b185577d21"
+  integrity sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==
 
 uc.micro@^2.0.0, uc.micro@^2.1.0:
   version "2.1.0"

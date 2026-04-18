@@ -24,8 +24,8 @@ const Cursor = () => {
   const isTouch = useTouchDevice();
 
   const cursorStateHandlers = {
-    changeToButton: useCallback(() => setCursorState(CURSOR_STATE.POINTER), []),
-    changeToDefault: useCallback(() => setCursorState(CURSOR_STATE.DEFAULT), []),
+    changeToButton: () => setCursorState(CURSOR_STATE.POINTER),
+    changeToDefault: () => setCursorState(CURSOR_STATE.DEFAULT),
   };
 
   const cursorHandlers = {
@@ -40,12 +40,12 @@ const Cursor = () => {
         ease: 'power2.out',
       });
     }),
-    handleMouseDown: useCallback(() => {
+    handleMouseDown: () => {
       setIsActive(true);
-    }, []),
-    handleMouseUp: useCallback(() => {
+    },
+    handleMouseUp: () => {
       setIsActive(false);
-    }, []),
+    },
   };
 
   const manageCursorEvents = useCallback(
