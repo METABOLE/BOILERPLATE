@@ -1,16 +1,38 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-export const useShortcut = (key: string, callback: (e: globalThis.KeyboardEvent) => void) => {
+export const useShortcut = (
+  keys: string | string[],
+  callback: (e: globalThis.KeyboardEvent) => void,
+) => {
+  const keysArray = Array.isArray(keys) ? keys : [keys];
+  const pressedKeysRef = useRef<Set<string>>(new Set());
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
+
   useEffect(() => {
-    const handleKeyPress = (e: globalThis.KeyboardEvent): void => {
-      if (e.code === key) {
+    const handleKeyDown = (e: globalThis.KeyboardEvent): void => {
+      pressedKeysRef.current.add(e.code);
+
+      const triggerKey = keysArray[keysArray.length - 1];
+      if (e.code !== triggerKey) return;
+
+      const allPressed = keysArray.every((key) => pressedKeysRef.current.has(key));
+      if (allPressed) {
         e.preventDefault();
-        callback(e);
+        callbackRef.current(e);
       }
     };
 
-    document.addEventListener('keydown', handleKeyPress);
+    const handleKeyUp = (e: globalThis.KeyboardEvent): void => {
+      pressedKeysRef.current.delete(e.code);
+    };
 
-    return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [key, callback]);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [keysArray.join('+')]);
 };
