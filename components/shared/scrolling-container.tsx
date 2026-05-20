@@ -1,5 +1,4 @@
 import { useTouchDevice } from '@/hooks/useTouchDevice';
-import { getStableViewportHeight } from '@/lib/stable-viewport';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -66,8 +65,8 @@ const ScrollingContainer = ({
       ease: 'none',
       scrollTrigger: {
         trigger: scrollContainer.current,
-        start: () => `top bottom+=${getStableViewportHeight()}`,
-        end: () => `bottom top-=${getStableViewportHeight()}`,
+        start: () => `top bottom+=100vh`,
+        end: () => `bottom top-=100vh`,
         scrub: true,
       },
     });
