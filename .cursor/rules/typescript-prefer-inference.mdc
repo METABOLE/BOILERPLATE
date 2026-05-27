@@ -1,0 +1,50 @@
+---
+description: TypeScript — inférence d’abord, pas d’any ni de assertions inutiles
+globs: '**/*.{ts,tsx}'
+alwaysApply: false
+---
+
+# TypeScript — style de typage
+
+## Inférence en priorité
+
+- Laisser TypeScript **inférer** les types quand ils sont déjà corrects sans annotation locale (variables, retours de fonctions, valeurs dérivées d’API typées).
+- **Ne pas** annoter explicitement un type si tu n’exploites **aucune** propriété ou contrat de ce type : l’annotation apporte alors peu et alourdit le code.
+- Annoter quand ça **documente une intention**, quand l’inférence **s’élargit trop** (`unknown` attendu, union trop large), ou pour l’**API publique** (exports, props fortement contraintes).
+
+```typescript
+// ✅ laisser inférer
+const items = data.map((x) => x.id);
+
+// ✅ annoter une prop de composant quand c’est le contrat du composant
+type Props = { label: string };
+
+// ❌ annotation redondante si rien n’utilise la forme du type explicitement
+const count: number = items.length;
+```
+
+## Interdire `any`
+
+- Ne pas utiliser `any`. Préférer :
+  - `unknown` + **retraitements** / **guards** ;
+  - génériques (`<T>`) ;
+  - types du domaine ou utilitaires (`Record<string, unknown>`, etc.) si nécessaire.
+
+## Éviter `as` (assertions)
+
+- Ne pas forcer un type avec `as SomeType` pour faire taire l’erreur. Préférer :
+  - **rétrécissement** (`if ('x' in o)`, `typeof`, discriminated unions) ;
+  - **`satisfies`** pour vérifier la forme sans élargir ;
+  - correction de la source du typage (lib, retour de fonction, générique).
+- **Exception usuelle** : `as const` pour littéraux / tuples étroits quand c’est l’idiome adapté.
+
+```typescript
+// ❌
+const el = document.querySelector('#x') as HTMLDivElement;
+
+// ✅
+const el = document.querySelector('#x');
+if (el instanceof HTMLDivElement) {
+  /* ... */
+}
+```

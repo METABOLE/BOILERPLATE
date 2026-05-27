@@ -27,7 +27,7 @@ interface PerformanceUtils {
   getConditionalProps: <T>(props: Record<PERFORMANCE_LEVEL, T>) => T | undefined;
 }
 
-export const STORAGE_KEY = 'apax-performance-metrics';
+export const STORAGE_KEY = 'sample-performance-metrics';
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
 const THRESHOLD = {

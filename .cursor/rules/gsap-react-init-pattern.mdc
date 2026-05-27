@@ -1,0 +1,56 @@
+---
+description: Pattern GSAP + React obligatoire (useGSAP, contextSafe, initAnimation)
+globs: '**/*.tsx'
+alwaysApply: false
+---
+
+# GSAP + React — pattern du projet
+
+Pour tout composant React qui initialise GSAP (tweens, timelines, Observer, ScrollTrigger, etc.), **toujours** utiliser cette structure, sauf exception justifiée.
+
+## Structure
+
+1. **Plugins** : `gsap.registerPlugin(...)` au niveau module (inclure `useGSAP` si tu utilises le hook).
+2. **Context safe** : obtenir `contextSafe` via un premier appel à `useGSAP()` (sans callback).
+3. **Init** : une fonction ou constante `initAnimation` (ou `initX`) enveloppée par `contextSafe(() => { ... })`.
+4. **Lancement** : un second `useGSAP(() => { initAnimation(); }, { ... })` qui appelle l’init ; y passer `scope` (ref du conteneur) quand tu utilises des sélecteurs ou que la cible DOM est le ref.
+
+## Exemple cible
+
+```tsx
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { Observer } from 'gsap/Observer';
+import { useRef } from 'react';
+
+gsap.registerPlugin(useGSAP, Observer);
+
+const Demo = () => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const { contextSafe } = useGSAP();
+
+  const initAnimation = contextSafe(() => {
+    // gsap.to(...), Observer.create(...), etc.
+  });
+
+  useGSAP(() => {
+    initAnimation();
+  }, []);
+
+  return <div ref={rootRef}>...</div>;
+};
+```
+
+## Nettoyage
+
+- **`useGSAP`** revert automatiquement le contexte GSAP au démontage (timelines, tweens, **Observer**, **ScrollTrigger**, etc. rattachés à ce contexte) : **ne pas** ajouter de `.kill()` ou de cleanup GSAP **redondant** pour ce qui est déjà couvert par ce hook.
+- Seules les ressources **hors GSAP** enregistrées à la main (ex. `addEventListener` natif sans passer par GSAP) méritent un `return () => { … }` explicite dans le même `useGSAP` si tu en ajoutes.
+- Ne pas utiliser `console.log` pour du debug si le projet ESLint l’interdit ; préférer `console.info` / logger du projet ou retirer le log.
+
+## Anti-patterns à éviter
+
+- Initialiser GSAP directement dans le corps du composant (hors hooks).
+- **`useEffect` avec dépendances** pour remplacer ce qui doit être géré par **`useGSAP`** (animations GSAP).
+- Un seul gros `useGSAP` sans séparation `contextSafe` + `initAnimation` **quand le code du projet suit ce pattern**.
+- Oublier `registerPlugin` pour chaque plugin utilisé (`Observer`, `ScrollTrigger`, etc.).
+- **`.kill()` / teardown manuel** sur des instances GSAP alors que **`useGSAP`** revert déjà le contexte (doublon inutile).

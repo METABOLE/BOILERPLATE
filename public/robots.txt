@@ -1,0 +1,12 @@
+# robots.txt — Sample
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /studio
+Disallow: /admin
+Disallow: /preview
+
+Sitemap: https://sample.com/sitemap.xml

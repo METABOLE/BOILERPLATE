@@ -1,3 +1,4 @@
+import { META } from '@/constants';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -12,11 +13,11 @@ interface SEOProps {
 }
 
 const SEO = ({
-  title = 'BOILERPLATE - This is a boilerplate',
+  title = META.title,
   isFrench = false,
-  description = 'This is a boilerplate',
-  image = '/og-image.png',
-  url = 'https://boilerplate.com',
+  description = META.description,
+  image = META.image,
+  url = META.url,
   type = 'website',
   noindex = false,
 }: SEOProps) => {
@@ -37,7 +38,7 @@ const SEO = ({
       <meta content={noindex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
 
       {/* Canonical link */}
-      <link key="canonical" href={'https://sample.com' + asPath} rel="canonical" />
+      <link key="canonical" href={`${META.url}${asPath}`} rel="canonical" />
 
       {/* OpenGraph Tags */}
       <meta content={title} property="og:title" />

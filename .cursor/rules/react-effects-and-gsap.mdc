@@ -1,0 +1,24 @@
+---
+description: React — limiter useEffect à dépendances ; GSAP via useGSAP et contextSafe
+globs: '**/*.{tsx,ts}'
+alwaysApply: false
+---
+
+# Effets React et animations GSAP
+
+## `useEffect` avec tableau de dépendances
+
+- **Éviter** d’ajouter systématiquement des effets synchronisés avec de longues dépendances quand une alternative plus ciblée existe (callbacks, event handlers, libs prévues pour le lifecycle).
+- Ne pas multiplier les `useEffect` « de synchronisation » si cela complexifie sans gain ; préférer des **subscriptions** explicites avec cleanup clair, ou des hooks du domaine.
+- Pour **GSAP**, ne pas utiliser `useEffect(..., [deps])` comme premier réflexe pour l’animation : voir ci-dessous.
+
+## GSAP dans React
+
+- Pour toute animation / timeline / **Observer** / **ScrollTrigger** GSAP dans un composant : privilégier **`useGSAP`** (`@gsap/react`) plutôt que `useLayoutEffect` / `useEffect` + dépendances, sauf cas vraiment hors animation.
+- Quand des animations ou tweens peuvent être déclenchés **depuis des callbacks** (événements, `requestAnimationFrame`, etc.), envelopper ces callbacks avec **`contextSafe`** (issue de `useGSAP()`) pour éviter travail sur un nœud démonté et warnings React.
+- Pattern attendu dans ce projet : voir aussi la règle **GSAP + React — pattern du projet** (`contextSafe` + fonction d’init + second `useGSAP` avec `scope` si besoin).
+
+## Anti-patterns
+
+- `useEffect(() => { gsap.to(...) }, [x, y, z])` pour piloter une animation GSAP alors que **`useGSAP`** avec `dependencies` / `revertOnUpdate` ou une stratégie dédiée GSAP suffit.
+- Callbacks d’animation non protégés qui appellent encore `gsap.to` après unmount.
