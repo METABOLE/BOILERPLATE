@@ -19,7 +19,9 @@ const loadQueryOptions = (context: { draftMode?: boolean }) => {
         stega: true,
         useCdn: false,
       }
-    : {};
+    : {
+        stega: false,
+      };
 };
 
 export { loadQuery, loadQueryOptions };

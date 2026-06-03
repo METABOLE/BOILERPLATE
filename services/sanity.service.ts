@@ -17,7 +17,7 @@ export async function fetchSanityData<T = unknown>(
   const initial = await loadQuery<T>(query, params, options);
 
   return {
-    initial,
+    initial: draftMode ? initial : { data: initial.data },
     draftMode,
   };
 }

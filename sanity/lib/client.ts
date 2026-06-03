@@ -26,7 +26,7 @@ export const createServerClient = (token?: string) =>
     useCdn: true,
     token,
     stega: {
-      enabled: true,
+      enabled: false,
       studioUrl: studioUrl,
     },
   });
