@@ -3379,37 +3379,7 @@
     yaml "^2.9.0"
     zod "^4.4.3"
 
-"@sanity/client@^7.17.0", "@sanity/client@^7.18.0":
-  version "7.20.0"
-  resolved "https://registry.yarnpkg.com/@sanity/client/-/client-7.20.0.tgz#ec10836112336e6469d191149f184b84a1f44a0c"
-  integrity sha512-uKwfqA+UfyWH6QzqpDD2DQnZu+WRa2iCM3OJ9AoyDZB9oHLl2NKI+9mX1xEZ7PiBuq09pogI7sxKaTKnaB6d+g==
-  dependencies:
-    "@sanity/eventsource" "^5.0.2"
-    get-it "^8.7.0"
-    nanoid "^3.3.11"
-    rxjs "^7.0.0"
-
-"@sanity/client@^7.21.0":
-  version "7.21.0"
-  resolved "https://registry.yarnpkg.com/@sanity/client/-/client-7.21.0.tgz#0f9819558d27c56f1466559f06fbfe70cf3bbc39"
-  integrity sha512-j3SdOGy9ggQSj9LtlrV8x4jaZgJmyYKNB5cXpXWkMLgi2/v0U+OTu0mHj17smioTdQSCHuVyJaxGcdpu3hxoOA==
-  dependencies:
-    "@sanity/eventsource" "^5.0.2"
-    get-it "^8.7.2"
-    nanoid "^3.3.11"
-    rxjs "^7.0.0"
-
-"@sanity/client@^7.22.0":
-  version "7.22.0"
-  resolved "https://registry.yarnpkg.com/@sanity/client/-/client-7.22.0.tgz#f2d72c1660e7aedbe2de1ed93e7b36b946b21e13"
-  integrity sha512-KqN9cowZwfZNCwCchRaz1B9WrZTThQxX/gfJhJO1uKJBuk/JcbYGBiSK9CSqocWoYDQ/QqANVXy1r7a8zognww==
-  dependencies:
-    "@sanity/eventsource" "^5.0.2"
-    get-it "^8.7.2"
-    nanoid "^3.3.11"
-    rxjs "^7.0.0"
-
-"@sanity/client@^7.22.1":
+"@sanity/client@7.22.1", "@sanity/client@^7.17.0", "@sanity/client@^7.18.0", "@sanity/client@^7.21.0", "@sanity/client@^7.22.0", "@sanity/client@^7.22.1":
   version "7.22.1"
   resolved "https://registry.yarnpkg.com/@sanity/client/-/client-7.22.1.tgz#8787817e4cbb1125c8b9e30ed61dd6eed51895e9"
   integrity sha512-DrQqLAes7W9Ek2iKgTZ+ffY1v3DURJ6//iXJZMEQSUeRbxls2ifRTdV1gRS26v8nMkL0OCH+WCoUUseD4vhuQQ==
