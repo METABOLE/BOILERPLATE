@@ -331,12 +331,14 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           executionTime = 1500;
         }
 
-        const animationScore =
-          isTimeout || executionTime > 1200
-            ? 10
-            : executionTime > THRESHOLD.ANIMATION_HIGH
-              ? 30
-              : 100;
+        let animationScore: number;
+        if (isTimeout || executionTime > 1200) {
+          animationScore = 10;
+        } else if (executionTime > THRESHOLD.ANIMATION_HIGH) {
+          animationScore = 30;
+        } else {
+          animationScore = 100;
+        }
 
         // Détermine le niveau de performance basé UNIQUEMENT sur le temps d'animation
         const performanceLevel: PERFORMANCE_LEVEL =
