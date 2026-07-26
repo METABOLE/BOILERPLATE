@@ -1,5 +1,7 @@
 import PageTransition from '@/components/layout/page-transition';
+import ScreenLoader from '@/components/layout/screen-loader';
 import SanityVisualEditing from '@/components/sanity/sanity-visual-editing';
+import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
 import { fetchSamples } from '@/services/sample.service';
@@ -22,6 +24,8 @@ interface CustomAppProps extends AppProps {
 function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const pathname = usePathname();
   const lenis = useLenis();
+  const isScreenLoader = useIsScreenLoader();
+
   const { draftMode } = globalProps;
 
   console.info(
@@ -40,6 +44,7 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
       ) : (
         <AppProvider>
           <Layout>
+            {isScreenLoader && <ScreenLoader />}
             <AnimatePresence
               mode="wait"
               onExitComplete={() => {

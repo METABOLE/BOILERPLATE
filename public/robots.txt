@@ -1,10 +1,11 @@
 # robots.txt — Sample
 User-agent: *
-Allow: /
 
+Allow: /
+Allow: /_next/static/
+Allow: /_next/image
+Disallow: /_next/data/
 Disallow: /api/
-Disallow: /_next/
-Disallow: /static/
 Disallow: /studio
 Disallow: /admin
 Disallow: /preview
