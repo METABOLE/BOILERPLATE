@@ -1,7 +1,4 @@
 import PageTransition from '@/components/layout/page-transition';
-import ScreenLoader from '@/components/layout/screen-loader';
-import { useEnvironment } from '@/hooks/useEnvironment';
-import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
 import '@/styles/main.scss';
@@ -15,8 +12,6 @@ import { usePathname } from 'next/navigation';
 function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
   const lenis = useLenis();
-  const isScreenLoader = useIsScreenLoader();
-  const { isProd } = useEnvironment();
 
   console.info(
     '%c Designed & Coded by METABOLE:',
@@ -30,7 +25,6 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <AppProvider>
       <Layout>
-        {isScreenLoader && isProd && <ScreenLoader />}
         <AnimatePresence
           mode="wait"
           onExitComplete={() => {
