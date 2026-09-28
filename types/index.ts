@@ -1,2 +1,1 @@
-export * from './sample.type';
-export * from './sanity.type';
+// Shared types barrel — add domain types here as needed.

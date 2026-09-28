@@ -1,5 +1,3 @@
-import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
-import { usePerformance } from '@/providers/performance.provider';
 import { useGSAP } from '@gsap/react';
 import { clsx } from 'clsx';
 import gsap from 'gsap';
@@ -9,7 +7,7 @@ import { ComponentProps, forwardRef, HTMLAttributes, ReactNode, useRef, useState
 interface BaseButtonProps {
   children: ReactNode;
   className?: string;
-  color?: 'primary' | 'secondary';
+  color?: 'accent' | 'white';
   disabled?: boolean;
   isResizable?: boolean;
   onClick?: () => void;
@@ -48,7 +46,7 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     {
       children,
       href,
-      color = 'primary',
+      color = 'accent',
       target,
       className,
       disabled = false,
@@ -58,13 +56,11 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     ref,
   ) => {
     const { contextSafe } = useGSAP();
-    const { isLoading } = usePerformance();
-    const buttonRef = useRef(null);
     const hiddenButtonRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef(null);
-    const currentChildRef = useRef(null);
-    const absoluteChildRef = useRef(null);
+    const textRef = useRef<HTMLDivElement>(null);
     const [currentChild, setCurrentChild] = useState(children);
+
+    const label = isResizable ? currentChild : children;
 
     const resizeButton = contextSafe(() => {
       if (!isResizable || currentChild === children) return;
@@ -109,46 +105,64 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     });
 
     useGSAP(() => {
-      if (!isResizable || isLoading) return;
+      if (!isResizable) return;
       setCurrentChild(children);
       resizeButton();
-    }, [children, isResizable, isLoading]);
+    }, [children, isResizable]);
 
     return (
       <>
         <DynamicElement
           ref={ref}
           className={clsx(
-            'inline-block w-fit cursor-pointer overflow-hidden rounded-lg uppercase',
-            color === 'primary' ? 'bg-red' : 'bg-blue',
-            disabled ? 'cursor-default! opacity-70' : 'cursor-pointer',
+            'group relative inline-flex h-10.75 w-fit cursor-pointer items-center overflow-hidden rounded-xs',
+            disabled ? 'pointer-events-none cursor-default! opacity-70' : 'cursor-pointer',
+            color === 'accent' && 'text-white',
+            color === 'white' && 'text-purple-black',
             className,
           )}
           {...props}
           disabled={disabled}
           href={href}
           target={target}
-          onMouseMove={(e) => useMagnet(e, 0.8)}
-          onMouseOut={(e) => useResetMagnet(e)}
         >
-          <div ref={buttonRef} className="z-20 flex h-full w-full items-center">
-            <div
-              ref={textRef}
-              className="relative flex w-fit items-center justify-center px-6 whitespace-nowrap"
-              onMouseMove={(e) => useMagnet(e, 0.4)}
-              onMouseOut={(e) => useResetMagnet(e)}
+          <span
+            aria-hidden={true}
+            className={clsx(
+              'ease-power4-out absolute inset-0 rounded-xs transition-transform duration-700 will-change-transform',
+              'group-hover:scale-[0.96] motion-reduce:transition-none motion-reduce:group-hover:scale-100',
+              color === 'accent' && 'bg-accent',
+              color === 'white' && 'bg-white',
+            )}
+          />
+          <div
+            ref={textRef}
+            className="relative z-10 h-full w-fit overflow-hidden whitespace-nowrap"
+          >
+            <span className="invisible flex h-full items-center px-3">{label}</span>
+            <span
+              className={clsx(
+                'ease-power4-out absolute inset-0 flex items-center px-3 transition-transform duration-700 will-change-transform',
+                'group-hover:-translate-y-full motion-reduce:transition-none motion-reduce:group-hover:translate-y-0',
+              )}
             >
-              <span ref={currentChildRef}>{isResizable ? currentChild : children}</span>
-              <span ref={absoluteChildRef} aria-hidden={true} className="absolute">
-                {isResizable ? currentChild : children}
-              </span>
-            </div>
+              {label}
+            </span>
+            <span
+              aria-hidden={true}
+              className={clsx(
+                'ease-power4-out absolute top-full left-0 flex h-full items-center px-3 transition-transform duration-700 will-change-transform',
+                'group-hover:-translate-y-full motion-reduce:transition-none motion-reduce:group-hover:translate-y-0',
+              )}
+            >
+              {label}
+            </span>
           </div>
         </DynamicElement>
         {isResizable && (
           <div
             ref={hiddenButtonRef}
-            className="pointer-events-none invisible fixed top-0 left-0 -z-10 h-full w-fit items-center justify-center px-6 whitespace-nowrap uppercase opacity-0"
+            className="pointer-events-none invisible fixed top-0 left-0 -z-10 h-10.75 w-fit items-center justify-center px-3 whitespace-nowrap opacity-0"
           >
             {children}
           </div>

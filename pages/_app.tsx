@@ -1,32 +1,22 @@
 import PageTransition from '@/components/layout/page-transition';
 import ScreenLoader from '@/components/layout/screen-loader';
-import SanityVisualEditing from '@/components/sanity/sanity-visual-editing';
+import { useEnvironment } from '@/hooks/useEnvironment';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
-import { fetchSamples } from '@/services/sample.service';
 import '@/styles/main.scss';
 import '@/styles/tailwind.css';
-import { Sample } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLenis } from 'lenis/react';
-import type { AppContext, AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import { usePathname } from 'next/navigation';
 
-interface CustomAppProps extends AppProps {
-  globalProps: {
-    samples: Sample[];
-    draftMode: boolean;
-  };
-}
-
-function App({ Component, pageProps, globalProps }: CustomAppProps) {
+function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
   const lenis = useLenis();
   const isScreenLoader = useIsScreenLoader();
-
-  const { draftMode } = globalProps;
+  const { isProd } = useEnvironment();
 
   console.info(
     '%c Designed & Coded by METABOLE:',
@@ -38,64 +28,29 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
   );
 
   return (
-    <>
-      {pathname.includes('/studio') ? (
-        <Component {...pageProps} />
-      ) : (
-        <AppProvider>
-          <Layout>
-            {isScreenLoader && <ScreenLoader />}
-            <AnimatePresence
-              mode="wait"
-              onExitComplete={() => {
-                if (lenis) {
-                  lenis.scrollTo(0, { immediate: true });
-                } else {
-                  window.scrollTo(0, 0);
-                }
-                requestAnimationFrame(() => {
-                  ScrollTrigger.refresh();
-                });
-              }}
-            >
-              <PageTransition key={pathname}>
-                <Component {...pageProps} {...globalProps} />
-              </PageTransition>
-            </AnimatePresence>
-          </Layout>
-        </AppProvider>
-      )}
-      {draftMode && <SanityVisualEditing />}
-    </>
+    <AppProvider>
+      <Layout>
+        {isScreenLoader && isProd && <ScreenLoader />}
+        <AnimatePresence
+          mode="wait"
+          onExitComplete={() => {
+            if (lenis) {
+              lenis.scrollTo(0, { immediate: true });
+            } else {
+              window.scrollTo(0, 0);
+            }
+            requestAnimationFrame(() => {
+              ScrollTrigger.refresh();
+            });
+          }}
+        >
+          <PageTransition key={pathname}>
+            <Component {...pageProps} />
+          </PageTransition>
+        </AnimatePresence>
+      </Layout>
+    </AppProvider>
   );
 }
-
-App.getInitialProps = async (context: AppContext) => {
-  if (!context.ctx.req) {
-    return {
-      globalProps: {
-        samples: {
-          initial: { data: [] },
-          draftMode: false,
-        },
-        draftMode: false,
-      },
-    };
-  }
-
-  const draftMode = !!(
-    context.ctx.req.headers.cookie?.includes('__prerender_bypass') ||
-    context.ctx.req.headers.cookie?.includes('__next_preview_data')
-  );
-
-  const samples = await fetchSamples({ draftMode });
-
-  return {
-    globalProps: {
-      samples,
-      draftMode: samples.draftMode || draftMode,
-    },
-  };
-};
 
 export default App;

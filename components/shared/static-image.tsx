@@ -1,5 +1,3 @@
-import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
-import { usePerformance } from '@/providers/performance.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Image from 'next/image';
@@ -16,7 +14,6 @@ const StaticImage = ({ src, alt, width = 1920, height = 1080 }: StaticImageProps
   const wrapperImageRef = useRef(null);
   const imageRef = useRef(null);
   const { contextSafe } = useGSAP();
-  const { performanceLevel } = usePerformance();
 
   const parallaxAnimation = contextSafe(() => {
     gsap
@@ -43,7 +40,6 @@ const StaticImage = ({ src, alt, width = 1920, height = 1080 }: StaticImageProps
   });
 
   useGSAP(() => {
-    if (performanceLevel === PERFORMANCE_LEVEL.LOW) return;
     parallaxAnimation();
   }, []);
 

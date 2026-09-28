@@ -1,4 +1,3 @@
-import { usePerformance } from '@/providers/performance.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useEffect, useRef, useState } from 'react';
@@ -7,7 +6,6 @@ const ScreenLoader = () => {
   const screenLoaderRef = useRef(null);
   const [counter, setCounter] = useState(0);
   const [counterComplete, setCounterComplete] = useState(false);
-  const { isLoading } = usePerformance();
 
   const { contextSafe } = useGSAP();
 
@@ -46,10 +44,10 @@ const ScreenLoader = () => {
   }, []);
 
   useEffect(() => {
-    if (counterComplete && !isLoading) {
+    if (counterComplete) {
       hideAnimation();
     }
-  }, [counterComplete, isLoading]);
+  }, [counterComplete]);
 
   return (
     <div
@@ -58,9 +56,6 @@ const ScreenLoader = () => {
     >
       <div className="text-center">
         <div className="text-8xl font-bold text-white">{counter}</div>
-        {counterComplete && isLoading && (
-          <div className="mt-4 text-sm text-white opacity-50">Analyzing performance...</div>
-        )}
       </div>
     </div>
   );
