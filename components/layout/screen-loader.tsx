@@ -2,11 +2,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useEffect, useRef, useState } from 'react';
 
-type ScreenLoaderProps = {
-  persistent?: boolean;
-};
-
-const ScreenLoader = ({ persistent = false }: ScreenLoaderProps) => {
+const ScreenLoader = () => {
   const screenLoaderRef = useRef(null);
   const [counter, setCounter] = useState(0);
   const [counterComplete, setCounterComplete] = useState(false);
@@ -48,10 +44,10 @@ const ScreenLoader = ({ persistent = false }: ScreenLoaderProps) => {
   }, []);
 
   useEffect(() => {
-    if (counterComplete && !persistent) {
+    if (counterComplete) {
       hideAnimation();
     }
-  }, [counterComplete, persistent]);
+  }, [counterComplete]);
 
   return (
     <div

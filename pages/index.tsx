@@ -1,5 +1,9 @@
-import ScreenLoader from '@/components/layout/screen-loader';
+import Hero from '@/features/home/hero';
 
 export default function Page() {
-  return <ScreenLoader persistent />;
+  return (
+    <>
+      <Hero />
+    </>
+  );
 }
