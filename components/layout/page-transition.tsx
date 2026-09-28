@@ -1,7 +1,12 @@
+import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
+import { usePerformance } from '@/providers/performance.provider';
 import { motion, Variants } from 'framer-motion';
 import { ReactNode } from 'react';
 
 export default function PageTransition({ children }: { children: ReactNode }) {
+  const { isLoading } = usePerformance();
+  const isScreenLoader = useIsScreenLoader();
+
   const firstBlockVariants: Variants = {
     initial: {
       y: 0,
@@ -31,7 +36,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   const anim = (variants: Variants) => {
     return {
       initial: 'initial',
-      animate: 'enter',
+      animate: isLoading && !isScreenLoader ? 'initial' : 'enter',
       exit: 'exit',
       variants,
     };

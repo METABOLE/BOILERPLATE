@@ -21,8 +21,9 @@ const eslintConfig = [
       'next.config.*',
       'postcss.config.*',
       'tailwind.config.*',
+      'sanity.config.*',
+      'sanity.cli.*',
     ],
-
   },
   js.configs.recommended,
   {

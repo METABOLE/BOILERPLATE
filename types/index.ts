@@ -1,1 +1,2 @@
-// Shared types barrel — add domain types here as needed.
+export * from './sample.type';
+export * from './sanity.type';

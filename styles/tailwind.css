@@ -10,7 +10,11 @@
   --y-half-default: calc(var(--y-default) / 2);
 
   /* FONTS */
-  --font-syne: 'Syne', sans-serif;
+  --font-sample: 'Sample', sans-serif;
+
+  /* COLORS */
+  --color-black: #000;
+  --color-white: #fff;
 }
 
 @theme {
@@ -19,15 +23,12 @@
   --color-red: #ff5142;
   --color-blue: #001eff;
 
-  --color-accent: #662aff;
-  --color-purple-black: #2c1664;
-  --color-black: #090416;
-  --color-white: #ffffff;
-  --color-purple-light: #c8b2ff;
-  --color-off-white: #efe8ff;
+  /* Primary */
+  --color-black: #000;
+  --color-white: #fff;
 
   /* FONTS */
-  --font-syne: var(--font-syne);
+  --font-sample: var(--font-sample);
 
   /* PADDING */
   --padding-x-half-default: var(--x-half-default);
