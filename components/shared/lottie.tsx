@@ -1,17 +1,25 @@
 import useIsMounted from '@/hooks/useIsMounted';
-import type { LottieComponentProps } from 'lottie-react';
+import type { LottieProps } from 'lottie-react';
 import dynamic from 'next/dynamic';
 
-const DynamicLottie = dynamic(() => import('lottie-react'), { ssr: false });
+const DynamicLottie = dynamic(() => import('lottie-react').then((mod) => mod.Lottie), {
+  ssr: false,
+});
 
-const Lottie = ({ animationData, className, ...props }: LottieComponentProps) => {
+type Props = LottieProps & {
+  /** @deprecated Prefer `src`. Kept for older call sites. */
+  animationData?: LottieProps['src'];
+};
+
+const Lottie = ({ animationData, src, className, ...props }: Props) => {
   const isMounted = useIsMounted();
+  const animationSrc = src ?? animationData;
 
-  if (!isMounted) {
+  if (!isMounted || !animationSrc) {
     return <div className={className} />;
   }
 
-  return <DynamicLottie animationData={animationData} className={className} {...props} />;
+  return <DynamicLottie className={className} src={animationSrc} {...props} />;
 };
 
 export default Lottie;

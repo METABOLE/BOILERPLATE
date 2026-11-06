@@ -142,7 +142,7 @@ function ReferenceRadioInputComponent(props: ObjectInputProps<Reference, ObjectS
             )}
 
             {!loading && documents.length > 0 && (
-              <Stack space={3}>
+              <Stack gap={3}>
                 {documents.map((document) => {
                   const id = document._id;
                   const checked = selectedId === id;

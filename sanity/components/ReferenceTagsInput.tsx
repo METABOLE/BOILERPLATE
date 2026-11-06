@@ -168,7 +168,7 @@ function ReferenceTagsInputComponent(
             )}
 
             {!loading && documents.length > 0 && (
-              <Stack space={3}>
+              <Stack gap={3}>
                 <Flex gap={2} wrap="wrap">
                   {documents.map((document) => {
                     const id = document._id;
