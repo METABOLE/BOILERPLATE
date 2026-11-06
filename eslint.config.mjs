@@ -74,6 +74,7 @@ const eslintConfig = [
         DOMRect: 'readonly',
 
         // Browser APIs
+        fetch: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         setInterval: 'readonly',
