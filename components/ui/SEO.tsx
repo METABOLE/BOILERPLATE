@@ -14,7 +14,7 @@ interface SEOProps {
 
 const SEO = ({
   title = META.title,
-  isFrench = false,
+  isFrench = true,
   description = META.description,
   image = META.image,
   url = META.url,
@@ -22,47 +22,43 @@ const SEO = ({
   noindex = false,
 }: SEOProps) => {
   const { asPath } = useRouter();
+  const lang = isFrench ? 'fr' : 'en';
+  const path = asPath.split('?')[0]?.split('#')[0] ?? asPath;
+  const canonicalUrl = `${META.url}${path.startsWith('/') ? path : `/${path}`}`;
+  const ogImage = `${url}${image}`;
 
   return (
     <Head>
-      <title>{title}</title>
-      <meta content="en" name="language" />
-      <meta content="en" httpEquiv="content-language" />
-      <meta charSet="utf-8" />
-      <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <meta content={description} name="description" />
-      <meta content="telephone=no" name="format-detection" />
-      <meta content="default" name="referrer" />
+      <title key="title">{title}</title>
+      <meta key="language" content={lang} name="language" />
+      <meta key="content-language" content={lang} httpEquiv="content-language" />
+      <meta key="charset" charSet="utf-8" />
+      <meta key="viewport" content="width=device-width, initial-scale=1" name="viewport" />
+      <meta key="description" content={description} name="description" />
+      <meta key="format-detection" content="telephone=no" name="format-detection" />
+      <meta key="referrer" content="default" name="referrer" />
 
-      {/* Indexation contrôlée */}
-      <meta content={noindex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
+      <meta key="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
 
-      {/* Canonical link */}
-      <link key="canonical" href={`${META.url}${asPath}`} rel="canonical" />
+      <link key="canonical" href={canonicalUrl} rel="canonical" />
 
-      {/* OpenGraph Tags */}
-      <meta content={title} property="og:title" />
-      <meta content={description} property="og:description" />
-      <meta content={`${url}${image}`} property="og:image" />
-      <meta content={url} property="og:url" />
-      <meta content={type} property="og:type" />
-      <meta content="Sample" property="og:site_name" />
-      <meta content={isFrench ? 'fr_FR' : 'en_US'} property="og:locale" />
+      <meta key="og:title" content={title} property="og:title" />
+      <meta key="og:description" content={description} property="og:description" />
+      <meta key="og:image" content={ogImage} property="og:image" />
+      <meta key="og:url" content={canonicalUrl} property="og:url" />
+      <meta key="og:type" content={type} property="og:type" />
+      <meta key="og:site_name" content="BOILERPLATE" property="og:site_name" />
+      <meta key="og:locale" content={isFrench ? 'fr_FR' : 'en_US'} property="og:locale" />
 
-      {/* Twitter Card */}
-      <meta content="summary_large_image" name="twitter:card" />
-      <meta content={title} name="twitter:title" />
-      <meta content={description} name="twitter:description" />
-      <meta content={`${url}${image}`} name="twitter:image" />
+      <meta key="twitter:card" content="summary_large_image" name="twitter:card" />
+      <meta key="twitter:title" content={title} name="twitter:title" />
+      <meta key="twitter:description" content={description} name="twitter:description" />
+      <meta key="twitter:image" content={ogImage} name="twitter:image" />
 
-      {/* Google verification - Uncomment when ready */}
-      <meta content="key-sample-google-verification" name="google-site-verification" />
+      {/* Uncomment and set a real token when the domain is ready:
+      <meta content="…" name="google-site-verification" /> */}
 
-      {/* Keywords - Optimisé pour "sample" et "sample studio" */}
-      <meta content="sample, Sample, SAMPLE," name="keywords" />
-
-      {/* Favicon */}
-      <link href="/favicon.ico" rel="icon" />
+      <link key="icon" href="/favicon.ico" rel="icon" />
     </Head>
   );
 };

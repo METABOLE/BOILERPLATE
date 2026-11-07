@@ -1,4 +1,4 @@
-# robots.txt — Sample
+# robots.txt — replace sample.com with the real production domain before go-live.
 User-agent: *
 
 Allow: /
@@ -9,5 +9,30 @@ Disallow: /api/
 Disallow: /studio
 Disallow: /admin
 Disallow: /preview
+
+# AI search / answer bots (allow retrieval; revisit if legal/IP policy changes)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
 
 Sitemap: https://sample.com/sitemap.xml

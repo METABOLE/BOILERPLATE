@@ -1,16 +1,17 @@
 import { useFontReadyHook } from '@/hooks/useFontReady';
 import { createContext, ReactNode, useContext } from 'react';
 
-const FontReadyContext = createContext<ReturnType<typeof useFontReadyHook> | null>(null);
+const FontReadyContext = createContext(false);
 
+/**
+ * Never gate rendering on font load — that empties SSR HTML and hides the
+ * site from Googlebot / AI crawlers.
+ * Consumers can still wait on `useFontReady()` before starting animations.
+ */
 export const FontReadyProvider = ({ children }: { children: ReactNode }) => {
   const isFontReady = useFontReadyHook();
-  if (!isFontReady) return null;
+
   return <FontReadyContext.Provider value={isFontReady}>{children}</FontReadyContext.Provider>;
 };
 
-export const useFontReady = () => {
-  const ctx = useContext(FontReadyContext);
-  if (!ctx) throw new Error('useFontReady must be used within a FontReadyProvider');
-  return ctx;
-};
+export const useFontReady = () => useContext(FontReadyContext);
